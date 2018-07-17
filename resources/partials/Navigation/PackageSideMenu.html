@@ -1,0 +1,10 @@
+<f:if condition="{package}">
+    <f:variable name="backPath" value="../" />
+</f:if>
+<ul>
+    <f:for each="{packages}" as="otherPackage">
+        <li>
+            <a href="{backPath}{otherPackage.packageName}/"><span{f:if(condition: '{otherPackage.packageName} == {package.packageName}', then: ' class="expanded"')}></span> {otherPackage.packageName}</a>
+        </li>
+    </f:for>
+</ul>

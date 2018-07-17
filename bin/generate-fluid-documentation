@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+$pwd = trim(shell_exec('pwd'));
+
+require_once $pwd . DIRECTORY_SEPARATOR . 'vendor/autoload.php';
+
+use NamelessCoder\FluidDocumentationGenerator\Data\DataFileResolver;
+use NamelessCoder\FluidDocumentationGenerator\Export\HtmlExporter;
+use NamelessCoder\FluidDocumentationGenerator\Export\JsonExporter;
+use NamelessCoder\FluidDocumentationGenerator\Export\XsdExporter;
+use NamelessCoder\FluidDocumentationGenerator\Entity\Schema;
+use NamelessCoder\FluidDocumentationGenerator\SchemaDocumentationGenerator;
+
+$publicDirectory = ($argv[1] ?? $pwd . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR) ?: $pwd . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR;
+$publicUrlPrefix = rtrim(($argv[2] ?? 'file://' . $publicDirectory) ?: 'file://' . $publicDirectory, '/') . '/';
+$force = (bool) ($argv[3] ?? false);
+
+$resolver = DataFileResolver::getInstance($pwd);
+$exporters = [
+    new XsdExporter($publicUrlPrefix),
+    new JsonExporter($publicUrlPrefix),
+    new HtmlExporter($publicUrlPrefix),
+];
+$generator = SchemaDocumentationGenerator::getInstance($exporters, $force);
+$generator->generateFilesForRoot();
+
+echo 'Generating static files for:' . PHP_EOL;
+foreach ($resolver->resolveInstalledVendors() as $vendor) {
+    $generator->generateFilesForVendor($vendor);
+    foreach ($vendor->getPackages() as $package) {
+        $generator->generateFilesForPackage($package);
+        echo '> ' . $vendor->getVendorName() . '/' . $package->getPackageName() . ': ';
+        foreach ($package->getVersions() as $version) {
+            echo $version->getVersion() . ' ';
+            $generator->generateFilesForSchema(new Schema($version));
+        }
+        echo PHP_EOL;
+    }
+}

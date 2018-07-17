@@ -1,0 +1,58 @@
+<f:layout />
+
+<f:section name="Side">
+    <h1>Package</h1>
+    <f:render partial="Navigation/SchemaSideMenu" arguments="{viewHelper: viewHelper, backPath: viewHelper.pathToSchemaRoot}" />
+    <h2>ViewHelpers</h2>
+    <f:render partial="Navigation/SideMenu" arguments="{viewHelper: viewHelper, expandedGroups: expandedGroups, group: viewHelper.schema.documentationTree, basePath: basePath}" />
+</f:section>
+
+<f:section name="Main">
+    <h1>ViewHelper Documentation</h1>
+    <h2><code>{f:if(condition: metadata.namespace.alias, then: '{metadata.namespace.alias}:')}{viewHelper.name}</code></h2>
+
+    <section class="divider">
+        <f:if condition="{viewHelper.description}">
+            <f:then>
+                {viewHelper.descriptionAsMarkup -> f:format.raw()}
+            </f:then>
+            <f:else>
+                This ViewHelper has no description.
+            </f:else>
+        </f:if>
+    </section>
+
+    <h2 class="divider">Arguments</h2>
+    <section id="arguments">
+        <f:if condition="{viewHelper.argumentDefinitions -> f:count()} == 0">
+            <div>This ViewHelper has no arguments</div>
+        </f:if>
+        <f:render partial="Arguments" arguments="{arguments: viewHelper.argumentDefinitions}" />
+    </section>
+
+    <f:if condition="{resources -> f:count()}">
+        <h2 class="divider">ViewHelper Resources</h2>
+        <ul class="unstyled">
+            <f:for each="{resources}" as="resourceUrl" key="resourceName">
+                <li>
+                    <a href="{resourceUrl}">
+                        {resourceName}
+                    </a>
+                </li>
+            </f:for>
+        </ul>
+    </f:if>
+
+    <f:if condition="{schemaResources -> f:count()}">
+        <h2 class="divider">Schema Resources</h2>
+        <ul class="unstyled">
+            <f:for each="{schemaResources}" as="resourceUrl" key="resourceName">
+                <li>
+                    <a href="{resourceUrl}">
+                        {resourceName}
+                    </a>
+                </li>
+            </f:for>
+        </ul>
+    </f:if>
+</f:section>

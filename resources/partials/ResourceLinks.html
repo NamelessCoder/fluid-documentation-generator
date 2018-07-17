@@ -1,0 +1,12 @@
+<f:if condition="{resources -> f:count()}">
+    <h2 class="divider">Resources</h2>
+    <ul class="unstyled">
+        <f:for each="{resources}" as="resourceUrl" key="resourceName">
+            <li>
+                <a href="{resourceUrl}">
+                    {resourceName}
+                </a>
+            </li>
+        </f:for>
+    </ul>
+</f:if>

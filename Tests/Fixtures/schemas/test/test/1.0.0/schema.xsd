@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers">
+    <xsd:element name="root">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[foo]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:string" name="test" use="optional" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[test]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="format.json.decode">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[Converts the JSON encoded argument into a PHP variable.
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:string" name="json" use="optional" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="format.json.encode">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[### JSON Encoding ViewHelper
+
+Returns a string containing the JSON representation of the argument.
+The argument may be any of the following types:
+
+- arrays, associative and traditional
+- DomainObjects
+- arrays containing DomainObjects
+- ObjectStorage containing DomainObjects
+- standard types (string, integer, boolean, float, NULL)
+- DateTime including ones found as property values on DomainObjects
+
+Recursion protection is enabled for DomainObjects with the option to
+add a special marker (any variable type above also supported here)
+which is inserted where an object which would cause recursion would
+be placed.
+
+Be specially careful when you JSON encode DomainObjects which have
+recursive relations to itself using either 1:n or m:n - in this case
+the one member of the converted relation will be whichever value you
+specified as "recursionMarker" - or the default value, NULL. When
+using the output of such conversion in JavaScript please make sure you
+check the type before assuming that every member of a converted 1:n
+or m:n recursive relation is in fact a JavaScript. Not doing so may
+result in fatal JavaScript errors in the client browser.
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:mixed" name="value" use="optional" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Array or Traversable]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:boolean" name="useTraversableKeys" use="optional" default="false">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[If TRUE, preserves keys from Traversables converted to arrays.]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:boolean" name="preventRecursion" use="optional" default="true">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[If FALSE, allows recursion to occur which could potentially be fatal to the]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:mixed" name="recursionMarker" use="optional" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Any value - string, integer, boolean, object or NULL - inserted instead of]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="dateTimeFormat" use="optional" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[A date() format for converting DateTime values to JSON-compatible values.]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

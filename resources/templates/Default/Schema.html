@@ -1,0 +1,16 @@
+<f:layout />
+
+<f:section name="Side">
+    <h1>Package</h1>
+    <f:render partial="Navigation/SchemaSideMenu" arguments="{schema: schema}" />
+    <h2>ViewHelpers</h2>
+    <f:render partial="Navigation/SideMenu" arguments="{group: schema.documentationTree}" />
+</f:section>
+
+<f:section name="Main">
+    <h1>Schema: <code>{package.fullyQualifiedName}:{schema.schema.version.version}</code></h1>
+    <f:render partial="Metadata" arguments="{schema: schema, metadata: metadata, viewHelpers: schema.documentedViewHelpers}" />
+    <f:render partial="ResourceLinks" arguments="{resources: resources}" />
+    {vendorReadme -> f:format.raw()}
+    {packageReadme -> f:format.raw()}
+</f:section>

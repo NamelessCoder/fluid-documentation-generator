@@ -1,0 +1,10 @@
+<f:layout />
+
+<f:section name="Side">
+    <h1>Vendors</h1>
+    <f:render partial="Navigation/RootSideMenu" arguments="{vendors: vendors}" />
+</f:section>
+
+<f:section name="Main">
+    {readme -> f:format.raw()}
+</f:section>

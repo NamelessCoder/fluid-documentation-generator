@@ -1,0 +1,10 @@
+<f:if condition="{vendor} && !{backPath}">
+    <f:variable name="backPath" value="../" />
+</f:if>
+<ul>
+    <f:for each="{vendors}" as="otherVendor">
+        <li>
+            <a href="{backPath}{otherVendor.vendorName}/"><span{f:if(condition: '{vendor.vendorName} == {otherVendor.vendorName}', then: ' class="expanded"')}></span> {otherVendor.vendorName}</a>
+        </li>
+    </f:for>
+</ul>

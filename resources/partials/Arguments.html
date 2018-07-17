@@ -1,0 +1,25 @@
+<f:if condition="{arguments -> f:count()} > 5">
+    <ul class="unstyled">
+        <f:for each="{arguments}" as="argument">
+            <li>
+                <a href="#argument-{argument.name}">
+                    {argument.name}
+                </a>
+            </li>
+        </f:for>
+    </ul>
+</f:if>
+<f:for each="{arguments}" as="argument">
+    <h5>
+        <a href="#argument-{argument.name}" id="argument-{argument.name}">
+            {argument.name}
+        </a>
+        <em>{argument.type}{f:if(condition: argument.required, then: ', <span class="required">required</span>')}</em>
+    </h5>
+    <f:if condition="{argument.default}">
+        <span class="argument-property">Default: {argument.default}</span>
+    </f:if>
+    <p>
+        {argument.description}
+    </p>
+</f:for>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{title}</title>
+        <link rel="stylesheet" href="{rootPath}_assets/styles.css" type="text/css" />
+    </head>
+    <body>
+        <a id="menu-link" href="#side-menu" title="Menu">&#x2261;</a>
+        <section id="side-menu">
+            <f:spaceless>
+                <div class="side-padding">
+                    <f:render section="Side" />
+                </div>
+            </f:spaceless>
+        </section>
+        <section id="main">
+            <f:render section="Main" />
+        </section>
+    </body>
+</html>

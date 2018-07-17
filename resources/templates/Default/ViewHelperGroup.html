@@ -1,0 +1,40 @@
+<f:layout />
+
+<f:section name="Side">
+    <h1>Package</h1>
+    <f:render partial="Navigation/SchemaSideMenu" arguments="{schema: group.schema, backPath: backPath}" />
+    <h2>ViewHelpers</h2>
+    <f:render partial="Navigation/SideMenu" arguments="{viewHelper: viewHelper, expandedGroups: expandedGroups, group: group.schema.documentationTree, basePath: basePath}" />
+</f:section>
+
+<f:section name="Main">
+    <h1>ViewHelpers in {group.name}</h1>
+    <ul class="recursive-index">
+        <f:render section="GroupListItems" arguments="{group: group, backPath: backPath}" />
+    </ul>
+    <f:render partial="Metadata" arguments="{schema: group.schema, metadata: metadata, viewHelpers: group.documentedViewHelpers}" />
+    <f:render partial="ResourceLinks" arguments="{resources: resources}" />
+</f:section>
+
+<f:section name="GroupListItems">
+    <li>
+        {group.name}
+        <ul>
+            <f:for each="{group.documentedViewHelpers}" as="documentedViewHelper">
+                <li>
+                    <a href="{backPath}{documentedViewHelper.path}.html">
+                        <span>{documentedViewHelper.name}</span>
+                    </a>
+                </li>
+            </f:for>
+        </ul>
+        <f:if condition="{group.subGroups -> f:count()}">
+            <ul>
+                <f:for each="{group.subGroups}" as="subGroup">
+                    <f:render section="GroupListItems" arguments="{group: subGroup}" />
+                </f:for>
+            </ul>
+        </f:if>
+    </li>
+</f:section>
+

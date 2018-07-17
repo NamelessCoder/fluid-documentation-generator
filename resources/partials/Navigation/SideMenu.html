@@ -1,0 +1,18 @@
+{idBase -> f:or(alternative: 1) -> f:variable(name: 'idBase')}
+<ul>
+<f:for each="{group.subGroups}" as="subGroup" iteration="iteration">
+    <li>
+        <label for="m{idBase}-{iteration.index}"><span{f:if(condition: '{expandedGroups.{subGroup.path}}', then: ' class="expanded"')}></span><a class="list-icon" href="{basePath}{subGroup.path}/index.html">&#x2261;</a> {subGroup.name}</label>
+        <a href="{basePath}{subGroup.path}/index.html">{subGroup.name}</a>
+        <input type="checkbox" id="m{idBase}-{iteration.index}" {f:if(condition: '{expandedGroups.{subGroup.path}}', then: 'checked="checked" ')}/>
+        <f:render partial="Navigation/SideMenu" arguments="{group: subGroup, viewHelper: viewHelper, expandedGroups: expandedGroups, basePath: basePath, idBase: '{idBase}-{iteration.index}'}" />
+    </li>
+</f:for>
+<f:for each="{group.documentedViewHelpers}" as="viewHelperInGroup">
+    <li>
+        <a href="{basePath}{viewHelperInGroup.path}.html">
+            <span{f:if(condition: '{viewHelper.name} == {viewHelperInGroup.name}', then: ' class="expanded"')}></span> {viewHelperInGroup.localName}
+        </a>
+    </li>
+</f:for>
+</ul>

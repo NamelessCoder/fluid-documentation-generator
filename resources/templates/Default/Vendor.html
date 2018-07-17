@@ -1,0 +1,60 @@
+<f:layout />
+
+<f:section name="Side">
+    <h1>Vendors</h1>
+    <f:render partial="Navigation/VendorSideMenu" arguments="{vendor: vendor, vendors: vendors}" />
+    <h1>Packages</h1>
+    <f:render partial="Navigation/PackageSideMenu" arguments="{packages: vendor.packages}" />
+</f:section>
+
+<f:section name="Main">
+    <h1>Packages from <code>{vendor.vendorName}</code></h1>
+    <ul class="unstyled">
+        <f:for each="{vendor.packages}" as="package">
+            <li>
+                <a href="{package.packageName}/">
+                    {package.packageName}
+                </a>
+            </li>
+        </f:for>
+    </ul>
+    {readme -> f:format.raw()}
+    <f:if condition="{metadata.outlets.github} || {metadata.outlets.packagist}">
+        <h2>External vendor resources</h2>
+        <ul class="unstyled">
+            <f:if condition="{metadata.outlets.github}">
+                <li>
+                    <a href="https://github.com/vendor.vendorName}">
+                        https://github.com/{vendor.vendorName}
+                    </a>
+                </li>
+            </f:if>
+            <f:if condition="{metadata.outlets.packagist}">
+                <li>
+                    <a href="https://packagist.org/packages/{vendor.vendorName}">
+                        https://packagist.org/packages/{vendor.vendorName}
+                    </a>
+                </li>
+            </f:if>
+        </ul>
+    </f:if>
+    <h2 class="divider">All packages and versions</h2>
+    <ul class="unstyled">
+        <f:for each="{vendor.packages}" as="package">
+            <li>
+                <a href="{package.packageName}/">
+                    {package.packageName}
+                </a>
+                <ul>
+                    <f:for each="{package.versions}" as="version">
+                        <li>
+                            <a href="{package.packageName}/{version.version}/">
+                                {version.version}
+                            </a>
+                        </li>
+                    </f:for>
+                </ul>
+            </li>
+        </f:for>
+    </ul>
+</f:section>

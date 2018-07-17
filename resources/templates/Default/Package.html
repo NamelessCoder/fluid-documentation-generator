@@ -1,0 +1,25 @@
+<f:layout />
+
+<f:section name="Side">
+    <h1>Vendors</h1>
+    <f:render partial="Navigation/VendorSideMenu" arguments="{vendor: vendor, vendors: vendors, backPath: '../../'}" />
+    <h1>Packages</h1>
+    <f:render partial="Navigation/PackageSideMenu" arguments="{package: package, packages: package.vendor.packages}" />
+</f:section>
+
+
+<f:section name="Main">
+    <h1>Package: {package.fullyQualifiedName}</h1>
+    {vendorReadme -> f:format.raw()}
+    {packageReadme -> f:format.raw()}
+    <h2 class="divider">All versions</h2>
+    <ul>
+        <f:for each="{package.versions}" as="version">
+            <li>
+                <a href="{version.version}/">
+                    {version.version}
+                </a>
+            </li>
+        </f:for>
+    </ul>
+</f:section>

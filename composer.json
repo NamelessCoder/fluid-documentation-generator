@@ -1,0 +1,28 @@
+{
+  "name": "namelesscoder/fluid-documentation-generator",
+  "require": {
+    "typo3fluid/fluid": "dev-master",
+    "php": "^7.1",
+    "cebe/markdown": "^1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "NamelessCoder\\FluidDocumentationGenerator\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "NamelessCoder\\FluidDocumentationGenerator\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "generate": "bin/generate-fluid-documentation"
+  },
+  "bin": [
+    "bin/generate-fluid-documentation.php"
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^7.1",
+    "mikey179/vfsStream": "^1.6"
+  }
+}

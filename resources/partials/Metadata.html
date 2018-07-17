@@ -1,0 +1,30 @@
+<ul>
+    <f:if condition="{metadata.outlets.github}">
+        <li>
+            <a href="https://github.com/{schema.schema.vendor.vendorName}/{schema.schema.package.packageName}">
+                https://github.com/{schema.schema.vendor.vendorName}/{schema.schema.package.packageName}
+            </a>
+        </li>
+    </f:if>
+    <f:if condition="{metadata.outlets.packagist}">
+        <li>
+            <a href="https://packagist.org/packages/{schema.schema.vendor.vendorName}/{schema.schema.package.packageName}">
+                https://packagist.org/packages/{schema.schema.vendor.vendorName}/{schema.schema.package.packageName}
+            </a>
+        </li>
+    </f:if>
+    <f:if condition="{metadata.outlets.ter}">
+        <li>
+            <a href="https://extensions.typo3.org/extension/{metadata.outlets.ter}">
+                https://extensions.typo3.org/extension/{metadata.outlets.ter}
+            </a>
+        </li>
+    </f:if>
+    <li><code>{viewHelpers -> f:count()}</code> ViewHelpers documented</li>
+    <f:if condition="{metadata.namespace.alias}">
+        <li><code>{metadata.namespace.alias}</code> is the preferred alias</li>
+    </f:if>
+    <f:if condition="{metadata.namespace.php}">
+        <li><code>{metadata.namespace.php}</code> is where you can find the PHP classes</li>
+    </f:if>
+</ul>
