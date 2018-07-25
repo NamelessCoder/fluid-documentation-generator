@@ -14,7 +14,7 @@
         <a href="#argument-{argument.name}" id="argument-{argument.name}">
             {argument.name}
         </a>
-        <em>{argument.type}{f:if(condition: argument.required, then: ', <span class="required">required</span>')}</em>
+        <em>{argument.type}{f:if(condition: '{argument.required} == 1', then: ', <span class="required">required</span>')}</em>
     </h5>
     <f:if condition="{argument.default}">
         <span class="argument-property">Default: {argument.default}</span>

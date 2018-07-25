@@ -107,7 +107,7 @@ class ProcessedSchema
     }
 
     /**
-     * @param array $elements
+     * @param array|\SimpleXMLElement[] $elements
      * @return ArgumentDefinition[]
      */
     private function extractArgumentDefinitions(array $elements): array
@@ -120,7 +120,7 @@ class ProcessedSchema
                 $name,
                 substr((string)$attributes['type'], 4),
                 (string)$element->xpath('xsd:annotation/xsd:documentation')[0],
-                ((string)$attributes['use']) !== 'optional',
+                ($attributes['use'] ?? false) === 'required',
                 ((string)$attributes['default'])
             );
         }
