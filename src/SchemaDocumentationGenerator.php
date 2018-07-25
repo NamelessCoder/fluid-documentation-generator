@@ -61,6 +61,9 @@ class SchemaDocumentationGenerator
         $processedSchema = $schema->process();
         foreach ($this->exporters as $exporter) {
             // Generate exports for VH groups, but do not generate exports for the root group.
+            foreach ($processedSchema->getDocumentationTree()->getDocumentedViewHelpers() as $viewHelperDocumentation) {
+                $exporter->exportViewHelper($viewHelperDocumentation);
+            }
             foreach ($processedSchema->getDocumentationTree()->getSubGroups() as $viewHelperDocumentationGroup) {
                 $this->generateFilesForViewHelperDocumentationGroup($viewHelperDocumentationGroup, $exporter);
             }
