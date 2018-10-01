@@ -185,7 +185,7 @@ class RstExporter implements ExporterInterface
             }
         }
         $backPath = str_repeat('../', substr_count($groupPath, '/'));
-        $rootPath = $backPath . '../../../../';
+        $rootPath = $backPath . '../../../';
         $this->view->assign('metadata', DataFileResolver::getInstance()->readSchemaMetaDataFile($schema->getSchema()));
         $this->view->assign('title', $viewHelperDocumentationGroup->getName() . ' ViewHelpers - ' . $schema->getSchema()->getVersion()->getFullyQualifiedName());
         $this->view->assign('rootPath', $rootPath);

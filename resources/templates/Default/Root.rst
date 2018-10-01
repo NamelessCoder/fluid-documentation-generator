@@ -8,6 +8,6 @@ Fluid ViewHelper Documentation (Root)
 
 .. toctree::
    :titlesonly:
-   :glob:
 
-   */*
+   typo3/Index
+   typo3fluid/Index

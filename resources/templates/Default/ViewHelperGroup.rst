@@ -8,7 +8,5 @@ ViewHelpers in {group.name}
 
 .. toctree::
    :titlesonly:
-   :glob:
 
-   */*
-   *
+

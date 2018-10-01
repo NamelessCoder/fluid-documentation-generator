@@ -1,5 +1,6 @@
 .. include:: {rootPath}Includes.txt
 
+================================
 {package.fullyQualifiedName} Version {schema.schema.version.version}
 ==================================
 
