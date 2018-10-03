@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.com/maddy2101/fluid-documentation-generator.svg?branch=master)](https://travis-ci.com/maddy2101/fluid-documentation-generator)
 [![Coverage Status](https://coveralls.io/repos/github/maddy2101/fluid-documentation-generator/badge.svg?branch=master)](https://coveralls.io/github/maddy2101/fluid-documentation-generator?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/maddy2101/fluid-documentation-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/maddy2101/fluid-documentation-generator/?branch=master)
 
 Fluid (ViewHelper) Documentation Generator
 ==========================================
