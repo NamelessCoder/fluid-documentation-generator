@@ -88,35 +88,10 @@ class RstExporter implements ExporterInterface
 
     public function exportVendor(SchemaVendor $vendor): void
     {
-        $resolver = DataFileResolver::getInstance();
-        $this->view->assign('vendor', $vendor);
-        $this->view->assign('title', $vendor->getVendorName() . ' - ViewHelper Documentation');
-        $this->view->assign('vendors', DataFileResolver::getInstance()->resolveInstalledVendors());
-        $this->view->assign('readme', (new GithubMarkdown())->parse(DataFileResolver::getInstance()->readVendorDataFile($vendor, 'README.md')) );
-        $this->view->assign('metadata', DataFileResolver::getInstance()->readVendorMetaDataFile($vendor));
-        $this->view->assign('rootPath', '../');
-        $resolver->getWriter()->publishDataFileForVendor(
-            $vendor,
-            'Index.rst',
-            $this->view->render('Vendor')
-        );
     }
 
     public function exportPackage(SchemaPackage $package): void
     {
-        $resolver = DataFileResolver::getInstance();
-        $this->view->assign('package', $package);
-        $this->view->assign('title', $package->getFullyQualifiedName() . ' - ViewHelper Documentation');
-        $this->view->assign('rootPath', '../../');
-        $this->view->assign('vendor', $package->getVendor());
-        $this->view->assign('vendors', DataFileResolver::getInstance()->resolveInstalledVendors());
-        $this->view->assign('vendorReadme', (new GithubMarkdown())->parse(DataFileResolver::getInstance()->readVendorDataFile($package->getVendor(), 'README.md')) );
-        $this->view->assign('packageReadme', (new GithubMarkdown())->parse(DataFileResolver::getInstance()->readPackageDataFile($package, 'README.md')) );
-        $resolver->getWriter()->publishDataFileForPackage(
-            $package,
-            'Index.rst',
-            $this->view->render('Package')
-        );
     }
 
     public function exportSchema(ProcessedSchema $processedSchema, bool $forceUpdate = false): void
