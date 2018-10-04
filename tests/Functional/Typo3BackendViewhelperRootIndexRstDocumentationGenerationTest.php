@@ -71,4 +71,17 @@ class Typo3BackendViewhelperRootIndexRstDocumentationGenerationTest extends Test
         $index = 3;
         $this->assertSame('Fluid ViewHelper Documentation' . PHP_EOL, $output[$index]);
     }
+
+    /**
+     * @test
+     */
+    public function headlineIsProperlyDecorated()
+    {
+        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
+        // first line is include, then empty, then upper headline decoration, then text, then lower headline decoration
+        $headlineTextIndex = 3;
+        $lengthOfHeadline = strlen($output[$headlineTextIndex]);
+        $this->assertSame($lengthOfHeadline, strlen($output[$headlineTextIndex - 1]));
+        $this->assertSame($lengthOfHeadline, strlen($output[$headlineTextIndex + 1]));
+    }
 }
