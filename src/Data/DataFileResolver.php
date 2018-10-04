@@ -209,7 +209,6 @@ class DataFileResolver
 
     public function getPublicDirectoryPath(): string
     {
-//		return '/home/maddy/Documents/fluid/viewhelper_docu/Documentation/';
         return $this->rootDirectory . DIRECTORY_SEPARATOR . static::PUBLIC_DIRECTORY . DIRECTORY_SEPARATOR;
     }
 

@@ -21,7 +21,7 @@ class Typo3BackendViewhelperRootIndexRstDocumentationGenerationTest extends Test
      * the generated file is compared against this fixture file
      * @var string
      */
-    private $fixtureFilePath = __DIR__ . '/../Fixtures/output/Documentation/Index.rst';
+    private $fixtureFilePath = __DIR__ . '/../Fixtures/rendering/output/Documentation/Index.rst';
 
     /**
      * output of the generation process
@@ -35,7 +35,7 @@ class Typo3BackendViewhelperRootIndexRstDocumentationGenerationTest extends Test
         $this->vfs->addChild(vfsStream::newDirectory('cache'));
         $dataFileResolver = DataFileResolver::getInstance(vfsStream::url('outputDir'));
         $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../resources/');
-        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../Fixtures/schemas/typo3');
+        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../Fixtures/rendering/input/');
         $schemaDocumentationGenerator = new SchemaDocumentationGenerator(
             [
                 new RstExporter()
@@ -85,5 +85,16 @@ class Typo3BackendViewhelperRootIndexRstDocumentationGenerationTest extends Test
         $this->assertRegExp('/^[=]+$/', $output[$headlineTextIndex - 1]);
         $this->assertSame($lengthOfHeadline, strlen($output[$headlineTextIndex + 1]));
         $this->assertRegExp('/^[=]+$/', $output[$headlineTextIndex + 1]);
+    }
+
+    /**
+     * @test
+     */
+    public function tocTreeContainsSubDirectoriesAsExpected()
+    {
+        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
+        $index = 11;
+        $this->assertSame('typo3/backend/9.5/Index' . PHP_EOL, $output[$index]);
+        $this->assertEmpty($output[$index + 1]);
     }
 }
