@@ -94,9 +94,17 @@ class Typo3BackendViewhelperRootIndexRstDocumentationGenerationTest extends Test
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 11;
-//        $this->assertSame(file_get_contents($this->fixtureFilePath), $this->vfs->getChild($this->generatedFilePath));
         $this->assertSame('    typo3/backend/9.4/Index' . PHP_EOL, $output[$index]);
         $this->assertSame('    typo3/backend/9.5/Index' . PHP_EOL, $output[$index + 1]);
-        $this->assertSame(PHP_EOL, $output[$index + 2]);
+        $this->assertArrayNotHasKey($index + 2, $output);
+    }
+
+    /**
+     * @test
+     */
+    public function generatedFileIsSameAsFixture()
+    {
+        $this->assertSame(file_get_contents($this->fixtureFilePath),
+            file_get_contents($this->vfs->getChild($this->generatedFilePath)->url()));
     }
 }

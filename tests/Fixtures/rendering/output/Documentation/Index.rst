@@ -9,4 +9,5 @@ Fluid ViewHelper Documentation
 .. toctree::
    :titlesonly:
 
-   typo3/backend/9.5/Index
+    typo3/backend/9.4/Index
+    typo3/backend/9.5/Index
