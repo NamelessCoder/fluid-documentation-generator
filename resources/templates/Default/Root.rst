@@ -9,5 +9,4 @@ Fluid ViewHelper Documentation
 .. toctree::
    :titlesonly:
 
-   typo3/Index
-   typo3fluid/Index
+<f:for each="{tocTree}" as="line">{line}</f:for>

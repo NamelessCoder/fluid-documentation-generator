@@ -5,9 +5,9 @@ namespace NamelessCoder\FluidDocumentationGenerator\Export;
 
 use cebe\markdown\GithubMarkdown;
 use NamelessCoder\FluidDocumentationGenerator\Data\DataFileResolver;
-use NamelessCoder\FluidDocumentationGenerator\ProcessedSchema;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaPackage;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaVendor;
+use NamelessCoder\FluidDocumentationGenerator\ProcessedSchema;
 use NamelessCoder\FluidDocumentationGenerator\SchemaDocumentationGenerator;
 use NamelessCoder\FluidDocumentationGenerator\ViewHelperDocumentation;
 use NamelessCoder\FluidDocumentationGenerator\ViewHelperDocumentationGroup;
@@ -67,8 +67,19 @@ class RstExporter implements ExporterInterface
 
     public function exportRoot(bool $forceUpdate = false): void
     {
-        $this->view->assign('vendors', DataFileResolver::getInstance()->resolveInstalledVendors());
-        $this->view->assign('readme', (new GithubMarkdown())->parse(DataFileResolver::getInstance()->readRootDataFile('README.md')) );
+        $vendors = DataFileResolver::getInstance()->resolveInstalledVendors();
+        // better to put the output together here, because fluid tends to mess up the empty lines
+        // that are important to proper rst rendering
+        $toctree = [];
+        $intend = '    ';
+        foreach ($vendors as $vendor) {
+            foreach ($vendor->getPackages() as $package) {
+                foreach ($package->getVersions() as $version) {
+                    $toctree[] = $intend . $vendor->getVendorName() . '/' . $package->getPackageName() . '/' . $version->getVersion() . '/Index' . PHP_EOL;
+                }
+            }
+        }
+        $this->view->assign('tocTree', $toctree);
         DataFileResolver::getInstance()->getWriter()->publishDataFile(
             'Index.rst',
             $this->view->render('Root')
