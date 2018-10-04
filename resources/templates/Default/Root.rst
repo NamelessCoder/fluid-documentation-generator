@@ -1,8 +1,8 @@
 .. include:: Includes.txt
 
-=====================================
-Fluid ViewHelper Documentation (Root)
-=====================================
+==============================
+Fluid ViewHelper Documentation
+==============================
 
 :Rendered: |today|
 

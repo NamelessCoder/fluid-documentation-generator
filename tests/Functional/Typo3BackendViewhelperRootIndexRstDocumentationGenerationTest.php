@@ -60,4 +60,15 @@ class Typo3BackendViewhelperRootIndexRstDocumentationGenerationTest extends Test
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $this->assertSame('.. include:: Includes.txt' . PHP_EOL, $output[0]);
     }
+
+    /**
+     * @test
+     */
+    public function headlineAsExpected()
+    {
+        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
+        // first line is include, then empty, then upper headline decoration, then text -> fourth line
+        $index = 3;
+        $this->assertSame('Fluid ViewHelper Documentation' . PHP_EOL, $output[$index]);
+    }
 }
