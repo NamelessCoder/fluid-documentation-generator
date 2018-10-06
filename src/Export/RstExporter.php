@@ -131,6 +131,7 @@ class RstExporter implements ExporterInterface
     public function exportViewHelper(ViewHelperDocumentation $viewHelperDocumentation, bool $forceUpdate = false): void
     {
         $resolver = DataFileResolver::getInstance();
+
         if (!$forceUpdate && file_exists($resolver->getPublicDirectoryPath() . $viewHelperDocumentation->getSchema()->getPath() . $viewHelperDocumentation->getPath() . '.rst')) {
             return;
         }
@@ -151,11 +152,10 @@ class RstExporter implements ExporterInterface
             ];
 
             if ($argumentDefinition->getDefaultValue() !== 'NULL') {
-                $argumentsData['default'] = 'Default: ' . trim(str_replace(PHP_EOL, '', $argumentDefinition->getDefaultValue())) . PHP_EOL;
+                $argumentsData['default'] = 'Default: ' . trim(str_replace(PHP_EOL, '', (string)$argumentDefinition->getDefaultValue())) . PHP_EOL;
             }
             $arguments[] = $argumentsData;
         }
-
         $this->view->assignMultiple([
             'headline' => $headline,
             'headlineDecoration' => implode('', $headlineDecoration),
@@ -163,28 +163,6 @@ class RstExporter implements ExporterInterface
             'viewHelper' => $viewHelperDocumentation,
             'arguments' => $arguments,
         ]);
-
-
-//        $expandedGroups = [];
-//        if (strpos($path, '/') !== false) {
-//            $rebuiltPath = '';
-//            $segments = explode('/', $path);
-//            array_pop($segments);
-//            foreach ($segments as $segment) {
-//                $rebuiltPath .= $segment;
-//                $expandedGroups[$rebuiltPath] = $rebuiltPath;
-//                $rebuiltPath .= '/';
-//            }
-//        }
-//        $schema = $viewHelperDocumentation->getSchema()->getSchema();
-//        $backPath = str_repeat('../', substr_count($path, '/'));
-//        $rootPath = $backPath . '../../../';
-//        $this->view->assign('metadata', DataFileResolver::getInstance()->readSchemaMetaDataFile($schema));
-//        $this->view->assign('viewHelper', $viewHelperDocumentation);
-//        $this->view->assign('rootPath', $rootPath);
-//        $this->view->assign('title', $viewHelperDocumentation->getName() . ' - ' . $schema->getVersion()->getFullyQualifiedName());
-//        $this->view->assign('expandedGroups', $expandedGroups);
-//        $this->view->assign('basePath', $rootPath . $viewHelperDocumentation->getSchema()->getPath());
         $resolver->getWriter()->publishDataFileForSchema(
             $viewHelperDocumentation->getSchema(),
             $path . '.rst',
