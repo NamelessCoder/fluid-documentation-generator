@@ -12,6 +12,6 @@ moduleLayout
    :titlesonly:
    :glob:
 
-    */Index
-    MenuItem
-    Menu
+   */Index
+   MenuItem
+   Menu

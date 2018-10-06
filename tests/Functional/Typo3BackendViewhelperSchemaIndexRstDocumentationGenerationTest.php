@@ -124,10 +124,10 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 13;
-        $this->assertSame('    */Index' . PHP_EOL, $output[$index]);
-        $this->assertSame('    Avatar' . PHP_EOL, $output[$index + 1]);
-        $this->assertSame('    ModuleLayout' . PHP_EOL, $output[$index + 2]);
-        $this->assertSame('    ModuleLink' . PHP_EOL, $output[$index + 3]);
+        $this->assertSame('   */Index' . PHP_EOL, $output[$index]);
+        $this->assertSame('   Avatar' . PHP_EOL, $output[$index + 1]);
+        $this->assertSame('   ModuleLayout' . PHP_EOL, $output[$index + 2]);
+        $this->assertSame('   ModuleLink' . PHP_EOL, $output[$index + 3]);
     }
 
     /**

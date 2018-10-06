@@ -124,9 +124,9 @@ class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTes
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 14;
-        $this->assertSame('    */Index' . PHP_EOL, $output[$index]);
-        $this->assertSame('    MenuItem' . PHP_EOL, $output[$index + 1]);
-        $this->assertSame('    Menu' . PHP_EOL, $output[$index + 2]);
+        $this->assertSame('   */Index' . PHP_EOL, $output[$index]);
+        $this->assertSame('   MenuItem' . PHP_EOL, $output[$index + 1]);
+        $this->assertSame('   Menu' . PHP_EOL, $output[$index + 2]);
     }
 
     /**

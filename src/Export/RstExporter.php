@@ -28,6 +28,12 @@ class RstExporter implements ExporterInterface
 
     private $rootUrl;
 
+    /**
+     * intention level for toctree structures
+     * @var string
+     */
+    private $intend = '   ';
+
     public function __construct(?string $rootUrl = null)
     {
         $this->rootUrl = $rootUrl;
@@ -70,11 +76,10 @@ class RstExporter implements ExporterInterface
         // better to put the output together here, because fluid tends to mess up the empty lines
         // that are important to proper rst rendering
         $toctree = [];
-        $intend = '    ';
         foreach ($vendors as $vendor) {
             foreach ($vendor->getPackages() as $package) {
                 foreach ($package->getVersions() as $version) {
-                    $toctree[] = $intend . $vendor->getVendorName() . '/' . $package->getPackageName() . '/' . $version->getVersion() . '/Index' . PHP_EOL;
+                    $toctree[] = $this->intend . $vendor->getVendorName() . '/' . $package->getPackageName() . '/' . $version->getVersion() . '/Index' . PHP_EOL;
                 }
             }
         }
@@ -104,14 +109,13 @@ class RstExporter implements ExporterInterface
         $decorationHeadlineLength = strlen($headline);
         $headlineDecoration = array_pad([], $decorationHeadlineLength, '=');
         $toctree = [];
-        $intend = '    ';
         $subGroupsCount = \count($processedSchema->getDocumentationTree()->getSubGroups());
         if ($subGroupsCount > 0) {
-            $toctree[] = $intend . '*/Index' . PHP_EOL;
+            $toctree[] = $this->intend . '*/Index' . PHP_EOL;
         }
         $viewHelpers = $processedSchema->getDocumentationTree()->getDocumentedViewHelpers();
         foreach ($viewHelpers as $viewHelper) {
-            $toctree[] = $intend . $viewHelper->getLocalName() . PHP_EOL;
+            $toctree[] = $this->intend . $viewHelper->getLocalName() . PHP_EOL;
         }
         $this->view->assignMultiple([
             'headline' => $headline,
@@ -186,12 +190,11 @@ class RstExporter implements ExporterInterface
         $viewHelpers = $viewHelperDocumentationGroup->getDocumentedViewHelpers();
         $subGroupsCount = \count($viewHelperDocumentationGroup->getSubGroups());
         $toctree = [];
-        $intend = '    ';
         if ($subGroupsCount > 0) {
-            $toctree[] = $intend . '*/Index' . PHP_EOL;
+            $toctree[] = $this->intend . '*/Index' . PHP_EOL;
         }
         foreach ($viewHelpers as $viewHelper) {
-            $toctree[] = $intend . $viewHelper->getLocalName() . PHP_EOL;
+            $toctree[] = $this->intend . $viewHelper->getLocalName() . PHP_EOL;
         }
         $this->view->assignMultiple([
             'headline' => $headline,

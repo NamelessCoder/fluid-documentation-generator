@@ -11,5 +11,5 @@ link
    :titlesonly:
    :glob:
 
-    EditRecord
-    NewRecord
+   EditRecord
+   NewRecord

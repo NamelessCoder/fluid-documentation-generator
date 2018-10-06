@@ -94,8 +94,8 @@ class Typo3BackendViewhelperRootIndexRstDocumentationGenerationTest extends Test
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 11;
-        $this->assertSame('    typo3/backend/9.4/Index' . PHP_EOL, $output[$index]);
-        $this->assertSame('    typo3/backend/9.5/Index' . PHP_EOL, $output[$index + 1]);
+        $this->assertSame('   typo3/backend/9.4/Index' . PHP_EOL, $output[$index]);
+        $this->assertSame('   typo3/backend/9.5/Index' . PHP_EOL, $output[$index + 1]);
     }
 
     /**

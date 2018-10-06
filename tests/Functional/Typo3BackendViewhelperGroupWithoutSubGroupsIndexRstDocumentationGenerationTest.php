@@ -114,8 +114,8 @@ class Typo3BackendViewhelperGroupWithoutSubGroupsIndexRstDocumentationGeneration
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 13;
-        $this->assertSame('    EditRecord' . PHP_EOL, $output[$index]);
-        $this->assertSame('    NewRecord' . PHP_EOL, $output[$index + 1]);
+        $this->assertSame('   EditRecord' . PHP_EOL, $output[$index]);
+        $this->assertSame('   NewRecord' . PHP_EOL, $output[$index + 1]);
     }
 
     /**
