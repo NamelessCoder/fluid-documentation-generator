@@ -4,7 +4,8 @@
 {headline}
 {headlineDecoration}
 
-{schema.documentedViewHelpers -> f:count()} ViewHelpers documented
+{viewHelpers} ViewHelpers documented
+{subGroups} Sub Namespaces
 
 .. toctree::
    :titlesonly:

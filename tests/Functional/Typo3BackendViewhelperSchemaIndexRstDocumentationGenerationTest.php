@@ -76,6 +76,16 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
     /**
      * @test
      */
+    public function viewHelperCountIsIntegrated()
+    {
+        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
+        $index = 6;
+        $this->assertSame('3 ViewHelpers documented' . PHP_EOL, $output[$index]);
+    }
+
+    /**
+     * @test
+     */
     public function tocTreeContainsSubDirectoriesAsExpected()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());

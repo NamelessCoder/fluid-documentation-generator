@@ -107,6 +107,8 @@ class RstExporter implements ExporterInterface
             'headline' => $headline,
             'headlineDecoration' => implode('', $headlineDecoration),
             'rootPath' => '../../../',
+            'subGroups' => \count($processedSchema->getDocumentationTree()->getSubGroups()),
+            'viewHelpers' => \count($processedSchema->getDocumentationTree()->getDocumentedViewHelpers()),
         ]);
         $resolver->getWriter()->publishDataFileForSchema(
             $processedSchema,
