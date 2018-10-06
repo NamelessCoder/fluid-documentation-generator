@@ -136,6 +136,8 @@ class RstExporter implements ExporterInterface
             return;
         }
         $path = $viewHelperDocumentation->getPath();
+        $backPath = str_repeat('../', substr_count($path, '/'));
+        $rootPath = $backPath . '../../../';
 
         $headline = $viewHelperDocumentation->getName();
         $decorationHeadlineLength = strlen($headline);
@@ -148,18 +150,20 @@ class RstExporter implements ExporterInterface
             $argumentsData = [
                 'headline' => $argumentHeadline,
                 'headlineDecoration' => implode('', $argumentHeadlineDecoration),
-                'description' => $argumentDefinition->getDescription(),
+                'description' => trim($argumentDefinition->getDescription()),
             ];
 
-            if ($argumentDefinition->getDefaultValue() !== 'NULL') {
-                $argumentsData['default'] = 'Default: ' . trim(str_replace(PHP_EOL, '', (string)$argumentDefinition->getDefaultValue())) . PHP_EOL;
+            $defaultValue = $argumentDefinition->getDefaultValue();
+            if ($defaultValue !== 'NULL' && $defaultValue !== "''") {
+                $sanitizedDefault = str_replace(PHP_EOL, '', $defaultValue);
+                $argumentsData['default'] = 'Default: ' . trim($sanitizedDefault) . PHP_EOL;
             }
             $arguments[] = $argumentsData;
         }
         $this->view->assignMultiple([
             'headline' => $headline,
             'headlineDecoration' => implode('', $headlineDecoration),
-            'rootPath' => '../../../',
+            'rootPath' => $rootPath,
             'viewHelper' => $viewHelperDocumentation,
             'arguments' => $arguments,
         ]);
