@@ -1,12 +1,17 @@
 .. include:: {rootPath}Includes.txt
 
-================
-ViewHelpers in {group.name}
-================
+{headlineDecoration}
+{headline}
+{headlineDecoration}
 
-{group.documentedViewHelpers -> f:count()} ViewHelpers documented
+
+{viewHelpers} ViewHelpers documented
+{subGroups} Sub namespaces
 
 .. toctree::
    :titlesonly:
+   :glob:
+
+<f:for each="{tocTree}" as="line">{line}</f:for>
 
 

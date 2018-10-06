@@ -4,13 +4,14 @@
 moduleLayout
 ============
 
+
 2 ViewHelpers documented
-1 Sub namespace
+1 Sub namespaces
 
 .. toctree::
    :titlesonly:
    :glob:
 
-   */Index
-   Menu
-   MenuItem
+    */Index
+    MenuItem
+    Menu

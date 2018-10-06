@@ -174,32 +174,29 @@ class RstExporter implements ExporterInterface
     {
         $resolver = DataFileResolver::getInstance();
         $groupPath = $viewHelperDocumentationGroup->getPath() . DIRECTORY_SEPARATOR;
-        $schema = $viewHelperDocumentationGroup->getSchema();
-        $publishingPath = $resolver->getPublicDirectoryPath() . $schema->getPath() . $groupPath;
-        if (!$forceUpdate && file_exists($publishingPath . 'Index.rst')) {
-            return;
-        }
-        $expandedGroups = [];
-        if (strpos($groupPath, '/') !== false) {
-            $rebuiltPath = '';
-            $segments = explode('/', $groupPath);
-            array_pop($segments);
-            foreach ($segments as $segment) {
-                $rebuiltPath .= $segment;
-                $expandedGroups[$rebuiltPath] = $rebuiltPath;
-                $rebuiltPath .= '/';
-            }
-        }
         $backPath = str_repeat('../', substr_count($groupPath, '/'));
         $rootPath = $backPath . '../../../';
-        $this->view->assign('metadata', DataFileResolver::getInstance()->readSchemaMetaDataFile($schema->getSchema()));
-        $this->view->assign('title', $viewHelperDocumentationGroup->getName() . ' ViewHelpers - ' . $schema->getSchema()->getVersion()->getFullyQualifiedName());
-        $this->view->assign('rootPath', $rootPath);
-        $this->view->assign('backPath', $backPath);
-        $this->view->assign('basePath', $rootPath . $schema->getPath());
-        $this->view->assign('expandedGroups', $expandedGroups);
-        $this->view->assign('resources', $this->generator->generateResourceLinksForSchema($schema));
-        $this->view->assign('group', $viewHelperDocumentationGroup);
+
+        $headline = $viewHelperDocumentationGroup->getGroupId();
+        $headlineDecoration = array_pad([], strlen($headline), '=');
+        $viewHelpers = $viewHelperDocumentationGroup->getDocumentedViewHelpers();
+        $subGroupsCount = \count($viewHelperDocumentationGroup->getSubGroups());
+        $toctree = [];
+        $intend = '    ';
+        if ($subGroupsCount > 0) {
+            $toctree[] = $intend . '*/Index' . PHP_EOL;
+        }
+        foreach ($viewHelpers as $viewHelper) {
+            $toctree[] = $intend . $viewHelper->getLocalName() . PHP_EOL;
+        }
+        $this->view->assignMultiple([
+            'headline' => $headline,
+            'headlineDecoration' => implode('', $headlineDecoration),
+            'rootPath' => $rootPath,
+            'viewHelpers' => \count($viewHelpers),
+            'subGroups' => $subGroupsCount,
+            'tocTree' => $toctree,
+        ]);
         $resolver->getWriter()->publishDataFileForSchema(
             $viewHelperDocumentationGroup->getSchema(),
             $groupPath . 'Index.rst',
