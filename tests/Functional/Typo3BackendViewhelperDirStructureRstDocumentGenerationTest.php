@@ -25,12 +25,6 @@ class Typo3BackendViewhelperDirStructureRstDocumentGenerationTest extends TestCa
     private $fixtureFilePath = __DIR__ . '/../Fixtures/rendering/output/Documentation';
 
     /**
-     * output of the generation process
-     * @var string
-     */
-    private $generatedFilePath = 'outputDir/public/Index.rst';
-
-    /**
      * @test
      */
     public function compareDirStructure()
