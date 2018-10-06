@@ -1,8 +1,8 @@
 .. include:: {rootPath}Includes.txt
 
-================================
-{package.vendor.vendorName}/{package.packageName}
-==================================
+{headlineDecoration}
+{headline}
+{headlineDecoration}
 
 {schema.documentedViewHelpers -> f:count()} ViewHelpers documented
 

@@ -100,8 +100,14 @@ class RstExporter implements ExporterInterface
             return;
         }
         $schema = $processedSchema->getSchema();
-        $this->view->assign('package', $schema->getPackage());
-        $this->view->assign('rootPath', '../../../');
+        $headline = $schema->getPackage()->getVendor()->getVendorName() . '/' . $schema->getPackage()->getPackageName();
+        $decorationHeadlineLength = strlen($headline);
+        $headlineDecoration = array_pad([], $decorationHeadlineLength, '=');
+        $this->view->assignMultiple([
+            'headline' => $headline,
+            'headlineDecoration' => implode('', $headlineDecoration),
+            'rootPath' => '../../../',
+        ]);
         $resolver->getWriter()->publishDataFileForSchema(
             $processedSchema,
             'Index.rst',
