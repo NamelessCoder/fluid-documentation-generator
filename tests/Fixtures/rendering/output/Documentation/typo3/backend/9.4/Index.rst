@@ -4,8 +4,8 @@
 typo3/backend
 =============
 
-3 ViewHelpers documented
-3 Sub namespaces
+* 3 ViewHelpers documented
+* 3 Sub namespaces
 
 .. toctree::
    :titlesonly:

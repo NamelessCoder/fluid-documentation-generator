@@ -104,7 +104,7 @@ class Typo3BackendViewhelperGroupWithoutSubGroupsIndexRstDocumentationGeneration
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 7;
-        $this->assertSame('2 ViewHelpers documented' . PHP_EOL, $output[$index]);
+        $this->assertSame('* 2 ViewHelpers documented' . PHP_EOL, $output[$index]);
     }
 
     /**

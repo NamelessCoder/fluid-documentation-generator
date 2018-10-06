@@ -5,7 +5,7 @@ link
 ====
 
 
-2 ViewHelpers documented
+* 2 ViewHelpers documented
 
 .. toctree::
    :titlesonly:

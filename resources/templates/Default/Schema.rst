@@ -4,8 +4,8 @@
 {headline}
 {headlineDecoration}
 
-{viewHelpers} ViewHelpers documented
-{subGroups} Sub namespaces
+* {viewHelpers} ViewHelpers documented
+* {subGroups} Sub namespaces
 
 .. toctree::
    :titlesonly:

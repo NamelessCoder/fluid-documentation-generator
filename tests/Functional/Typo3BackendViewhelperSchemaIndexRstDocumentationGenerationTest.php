@@ -104,7 +104,7 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 6;
-        $this->assertSame('3 ViewHelpers documented' . PHP_EOL, $output[$index]);
+        $this->assertSame('* 3 ViewHelpers documented' . PHP_EOL, $output[$index]);
     }
 
     /**
@@ -114,7 +114,7 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 7;
-        $this->assertSame('3 Sub namespaces' . PHP_EOL, $output[$index]);
+        $this->assertSame('* 3 Sub namespaces' . PHP_EOL, $output[$index]);
     }
 
     /**

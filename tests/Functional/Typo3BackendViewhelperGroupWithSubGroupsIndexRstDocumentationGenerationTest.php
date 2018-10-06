@@ -104,7 +104,7 @@ class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTes
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 7;
-        $this->assertSame('2 ViewHelpers documented' . PHP_EOL, $output[$index]);
+        $this->assertSame('* 2 ViewHelpers documented' . PHP_EOL, $output[$index]);
     }
 
     /**
@@ -114,7 +114,7 @@ class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTes
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 8;
-        $this->assertSame('1 Sub namespaces' . PHP_EOL, $output[$index]);
+        $this->assertSame('* 1 Sub namespaces' . PHP_EOL, $output[$index]);
     }
 
     /**
