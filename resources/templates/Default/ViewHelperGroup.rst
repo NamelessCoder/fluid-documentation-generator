@@ -5,8 +5,10 @@
 {headlineDecoration}
 
 
+<f:spaceless>
 {viewHelpers} ViewHelpers documented
-{subGroups} Sub namespaces
+<f:if condition="{subGroups} > 0">{subGroups} Sub namespaces</f:if>
+</f:spaceless>
 
 .. toctree::
    :titlesonly:
