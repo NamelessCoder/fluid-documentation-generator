@@ -103,12 +103,23 @@ class RstExporter implements ExporterInterface
         $headline = $schema->getPackage()->getVendor()->getVendorName() . '/' . $schema->getPackage()->getPackageName();
         $decorationHeadlineLength = strlen($headline);
         $headlineDecoration = array_pad([], $decorationHeadlineLength, '=');
+        $toctree = [];
+        $intend = '    ';
+        $subGroupsCount = \count($processedSchema->getDocumentationTree()->getSubGroups());
+        if ($subGroupsCount > 0) {
+            $toctree[] = $intend . '*/Index' . PHP_EOL;
+        }
+        $viewHelpers = $processedSchema->getDocumentationTree()->getDocumentedViewHelpers();
+        foreach ($viewHelpers as $viewHelper) {
+            $toctree[] = $intend . $viewHelper->getLocalName() . PHP_EOL;
+        }
         $this->view->assignMultiple([
             'headline' => $headline,
             'headlineDecoration' => implode('', $headlineDecoration),
             'rootPath' => '../../../',
-            'subGroups' => \count($processedSchema->getDocumentationTree()->getSubGroups()),
-            'viewHelpers' => \count($processedSchema->getDocumentationTree()->getDocumentedViewHelpers()),
+            'subGroups' => $subGroupsCount,
+            'viewHelpers' => \count($viewHelpers),
+            'tocTree' => $toctree,
         ]);
         $resolver->getWriter()->publishDataFileForSchema(
             $processedSchema,

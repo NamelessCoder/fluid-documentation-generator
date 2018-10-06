@@ -90,7 +90,7 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 7;
-        $this->assertSame('3 Sub Namespaces' . PHP_EOL, $output[$index]);
+        $this->assertSame('3 Sub namespaces' . PHP_EOL, $output[$index]);
     }
 
     /**
@@ -99,10 +99,11 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
     public function tocTreeContainsSubDirectoriesAsExpected()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        $index = 11;
-        $this->assertSame('    typo3/backend/9.4/Index' . PHP_EOL, $output[$index]);
-        $this->assertSame('    typo3/backend/9.5/Index' . PHP_EOL, $output[$index + 1]);
-        $this->assertArrayNotHasKey($index + 2, $output);
+        $index = 13;
+        $this->assertSame('    */Index' . PHP_EOL, $output[$index]);
+        $this->assertSame('    Avatar' . PHP_EOL, $output[$index + 1]);
+        $this->assertSame('    ModuleLayout' . PHP_EOL, $output[$index + 2]);
+        $this->assertSame('    ModuleLink' . PHP_EOL, $output[$index + 3]);
     }
 
     /**
@@ -110,8 +111,8 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
      */
     public function generatedFileIsSameAsFixture()
     {
-        $this->assertSame(file_get_contents($this->fixtureFilePath),
-            file_get_contents($this->vfs->getChild($this->generatedFilePath)->url()));
+        $this->assertSame(trim(file_get_contents($this->fixtureFilePath)),
+            trim(file_get_contents($this->vfs->getChild($this->generatedFilePath)->url())));
     }
 
     protected function setUp()

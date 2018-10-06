@@ -11,7 +11,7 @@ typo3/backend
    :titlesonly:
    :glob:
 
-   */Index
-   Avatar
-   ModuleLayout
-   ModuleLink
+    */Index
+    Avatar
+    ModuleLayout
+    ModuleLink

@@ -5,10 +5,10 @@
 {headlineDecoration}
 
 {viewHelpers} ViewHelpers documented
-{subGroups} Sub Namespaces
+{subGroups} Sub namespaces
 
 .. toctree::
    :titlesonly:
    :glob:
 
-   *
+<f:for each="{tocTree}" as="line">{line}</f:for>
