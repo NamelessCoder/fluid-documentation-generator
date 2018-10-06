@@ -107,4 +107,13 @@ class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCa
         $index = 7;
         $this->assertSame('Create internal link within backend app' . PHP_EOL, $output[$index]);
     }
+
+    /**
+     * @test
+     */
+    public function generatedFileIsSameAsFixture()
+    {
+        $this->assertSame(file_get_contents($this->fixtureFilePath),
+            file_get_contents($this->vfs->getChild($this->generatedFilePath)->url()));
+    }
 }

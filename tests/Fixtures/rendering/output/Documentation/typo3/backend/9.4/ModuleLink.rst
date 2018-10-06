@@ -21,6 +21,8 @@ arguments (anySimpleType)
 -------------------------
 
 
+Default: array ()
+
 Additional link arguments
 
 query (string)

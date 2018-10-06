@@ -140,11 +140,28 @@ class RstExporter implements ExporterInterface
         $decorationHeadlineLength = strlen($headline);
         $headlineDecoration = array_pad([], $decorationHeadlineLength, '=');
 
+        $arguments = [];
+        foreach ($viewHelperDocumentation->getArgumentDefinitions() as $argumentDefinition) {
+            $argumentHeadline = trim($argumentDefinition->getName() . ' (' . $argumentDefinition->getType() . ') ' . ($argumentDefinition->isRequired() ? 'required' : ''));
+            $argumentHeadlineDecoration = array_pad([], strlen($argumentHeadline), '-');
+            $argumentsData = [
+                'headline' => $argumentHeadline,
+                'headlineDecoration' => implode('', $argumentHeadlineDecoration),
+                'description' => $argumentDefinition->getDescription(),
+            ];
+
+            if ($argumentDefinition->getDefaultValue() !== 'NULL') {
+                $argumentsData['default'] = 'Default: ' . trim(str_replace(PHP_EOL, '', $argumentDefinition->getDefaultValue())) . PHP_EOL;
+            }
+            $arguments[] = $argumentsData;
+        }
+
         $this->view->assignMultiple([
             'headline' => $headline,
             'headlineDecoration' => implode('', $headlineDecoration),
             'rootPath' => '../../../',
             'viewHelper' => $viewHelperDocumentation,
+            'arguments' => $arguments,
         ]);
 
 
