@@ -95,13 +95,13 @@ class RstExporter implements ExporterInterface
 
     public function exportSchema(ProcessedSchema $processedSchema, bool $forceUpdate = false): void
     {
-
         $resolver = DataFileResolver::getInstance();
         if (!$forceUpdate && file_exists($resolver->getPublicDirectoryPath() . $processedSchema->getPath() . 'Index.rst')) {
             return;
         }
         $schema = $processedSchema->getSchema();
         $this->view->assign('package', $schema->getPackage());
+        $this->view->assign('rootPath', '../../../');
         $resolver->getWriter()->publishDataFileForSchema(
             $processedSchema,
             'Index.rst',
