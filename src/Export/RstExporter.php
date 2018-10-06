@@ -144,6 +144,7 @@ class RstExporter implements ExporterInterface
             'headline' => $headline,
             'headlineDecoration' => implode('', $headlineDecoration),
             'rootPath' => '../../../',
+            'viewHelper' => $viewHelperDocumentation,
         ]);
 
 

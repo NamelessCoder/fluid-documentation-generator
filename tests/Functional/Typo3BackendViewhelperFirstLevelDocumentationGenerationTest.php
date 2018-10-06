@@ -97,4 +97,14 @@ class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCa
         $this->assertSame($lengthOfHeadline, strlen($output[$headlineTextIndex + 1]));
         $this->assertRegExp('/^[=]+$/', $output[$headlineTextIndex + 1]);
     }
+
+    /**
+     * @test
+     */
+    public function descriptionGetsRendered()
+    {
+        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
+        $index = 7;
+        $this->assertSame('Create internal link within backend app' . PHP_EOL, $output[$index]);
+    }
 }

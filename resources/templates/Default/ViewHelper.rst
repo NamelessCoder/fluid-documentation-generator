@@ -4,14 +4,8 @@
 {headline}
 {headlineDecoration}
 
-<f:if condition="{viewHelper.description}">
-    <f:then>
-        {viewHelper.description -> f:format.raw()}
-    </f:then>
-    <f:else>
-        This ViewHelper has no description.
-    </f:else>
-</f:if>
+
+{viewHelper.description -> f:format.raw()}
 
 Arguments
 =========
