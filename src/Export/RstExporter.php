@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace NamelessCoder\FluidDocumentationGenerator\Export;
 
-use cebe\markdown\GithubMarkdown;
 use NamelessCoder\FluidDocumentationGenerator\Data\DataFileResolver;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaPackage;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaVendor;
@@ -102,13 +101,7 @@ class RstExporter implements ExporterInterface
             return;
         }
         $schema = $processedSchema->getSchema();
-        $this->view->assign('schema', $processedSchema);
-        $this->view->assign('title', $schema->getVersion()->getFullyQualifiedName() . ' - ViewHelpers');
-        $this->view->assign('rootPath', '../../../');
-        $this->view->assign('vendorReadme', (new GithubMarkdown())->parse(DataFileResolver::getInstance()->readVendorDataFile($schema->getVendor(), 'README.md')) );
-        $this->view->assign('packageReadme', (new GithubMarkdown())->parse(DataFileResolver::getInstance()->readPackageDataFile($schema->getPackage(), 'README.md')) );
-        $this->view->assign('metadata', DataFileResolver::getInstance()->readSchemaMetaDataFile($schema));
-        $this->view->assign('resources', $this->generator->generateResourceLinksForSchema($processedSchema));
+        $this->view->assign('package', $schema->getPackage());
         $resolver->getWriter()->publishDataFileForSchema(
             $processedSchema,
             'Index.rst',
