@@ -31,14 +31,6 @@ class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCa
      */
     private $generatedFilePath = 'outputDir/public/typo3/backend/9.4/ModuleLink.rst';
 
-    /**
-     * @test
-     */
-    public function fileIsCreated()
-    {
-        $this->assertTrue($this->vfs->hasChild($this->generatedFilePath));
-    }
-
     protected function setUp()
     {
         $this->vfs = vfsStream::setup('outputDir');
@@ -61,5 +53,13 @@ class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCa
                 }
             }
         }
+    }
+
+    /**
+     * @test
+     */
+    public function fileIsCreated()
+    {
+        $this->assertTrue($this->vfs->hasChild($this->generatedFilePath));
     }
 }

@@ -30,6 +30,30 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
      */
     private $generatedFilePath = 'outputDir/public/typo3/backend/9.4/Index.rst';
 
+    protected function setUp()
+    {
+        $this->vfs = vfsStream::setup('outputDir');
+        $this->vfs->addChild(vfsStream::newDirectory('cache'));
+        $dataFileResolver = DataFileResolver::getInstance(vfsStream::url('outputDir'));
+        $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../resources/');
+        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../Fixtures/rendering/input/');
+        $schemaDocumentationGenerator = new SchemaDocumentationGenerator(
+            [
+                new RstExporter()
+            ]
+        );
+        $schemaDocumentationGenerator->generateFilesForRoot();
+        foreach ($dataFileResolver->resolveInstalledVendors() as $vendor) {
+            $schemaDocumentationGenerator->generateFilesForVendor($vendor);
+            foreach ($vendor->getPackages() as $package) {
+                $schemaDocumentationGenerator->generateFilesForPackage($package);
+                foreach ($package->getVersions() as $version) {
+                    $schemaDocumentationGenerator->generateFilesForSchema(new Schema($version));
+                }
+            }
+        }
+    }
+
     /**
      * @test
      */
@@ -113,29 +137,5 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
     {
         $this->assertSame(trim(file_get_contents($this->fixtureFilePath)),
             trim(file_get_contents($this->vfs->getChild($this->generatedFilePath)->url())));
-    }
-
-    protected function setUp()
-    {
-        $this->vfs = vfsStream::setup('outputDir');
-        $this->vfs->addChild(vfsStream::newDirectory('cache'));
-        $dataFileResolver = DataFileResolver::getInstance(vfsStream::url('outputDir'));
-        $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../resources/');
-        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../Fixtures/rendering/input/');
-        $schemaDocumentationGenerator = new SchemaDocumentationGenerator(
-            [
-                new RstExporter()
-            ]
-        );
-        $schemaDocumentationGenerator->generateFilesForRoot();
-        foreach ($dataFileResolver->resolveInstalledVendors() as $vendor) {
-            $schemaDocumentationGenerator->generateFilesForVendor($vendor);
-            foreach ($vendor->getPackages() as $package) {
-                $schemaDocumentationGenerator->generateFilesForPackage($package);
-                foreach ($package->getVersions() as $version) {
-                    $schemaDocumentationGenerator->generateFilesForSchema(new Schema($version));
-                }
-            }
-        }
     }
 }
