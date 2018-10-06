@@ -1,8 +1,8 @@
 .. include:: {rootPath}Includes.txt
 
-========================
-ViewHelper Documentation {f:if(condition: metadata.namespace.alias, then: '{metadata.namespace.alias}:')}{viewHelper.localName}
-========================
+{headlineDecoration}
+{headline}
+{headlineDecoration}
 
 <f:if condition="{viewHelper.description}">
     <f:then>

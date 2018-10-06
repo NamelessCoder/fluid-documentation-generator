@@ -135,26 +135,38 @@ class RstExporter implements ExporterInterface
             return;
         }
         $path = $viewHelperDocumentation->getPath();
-        $expandedGroups = [];
-        if (strpos($path, '/') !== false) {
-            $rebuiltPath = '';
-            $segments = explode('/', $path);
-            array_pop($segments);
-            foreach ($segments as $segment) {
-                $rebuiltPath .= $segment;
-                $expandedGroups[$rebuiltPath] = $rebuiltPath;
-                $rebuiltPath .= '/';
-            }
-        }
-        $schema = $viewHelperDocumentation->getSchema()->getSchema();
-        $backPath = str_repeat('../', substr_count($path, '/'));
-        $rootPath = $backPath . '../../../';
-        $this->view->assign('metadata', DataFileResolver::getInstance()->readSchemaMetaDataFile($schema));
-        $this->view->assign('viewHelper', $viewHelperDocumentation);
-        $this->view->assign('rootPath', $rootPath);
-        $this->view->assign('title', $viewHelperDocumentation->getName() . ' - ' . $schema->getVersion()->getFullyQualifiedName());
-        $this->view->assign('expandedGroups', $expandedGroups);
-        $this->view->assign('basePath', $rootPath . $viewHelperDocumentation->getSchema()->getPath());
+
+        $headline = $viewHelperDocumentation->getName();
+        $decorationHeadlineLength = strlen($headline);
+        $headlineDecoration = array_pad([], $decorationHeadlineLength, '=');
+
+        $this->view->assignMultiple([
+            'headline' => $headline,
+            'headlineDecoration' => implode('', $headlineDecoration),
+            'rootPath' => '../../../',
+        ]);
+
+
+//        $expandedGroups = [];
+//        if (strpos($path, '/') !== false) {
+//            $rebuiltPath = '';
+//            $segments = explode('/', $path);
+//            array_pop($segments);
+//            foreach ($segments as $segment) {
+//                $rebuiltPath .= $segment;
+//                $expandedGroups[$rebuiltPath] = $rebuiltPath;
+//                $rebuiltPath .= '/';
+//            }
+//        }
+//        $schema = $viewHelperDocumentation->getSchema()->getSchema();
+//        $backPath = str_repeat('../', substr_count($path, '/'));
+//        $rootPath = $backPath . '../../../';
+//        $this->view->assign('metadata', DataFileResolver::getInstance()->readSchemaMetaDataFile($schema));
+//        $this->view->assign('viewHelper', $viewHelperDocumentation);
+//        $this->view->assign('rootPath', $rootPath);
+//        $this->view->assign('title', $viewHelperDocumentation->getName() . ' - ' . $schema->getVersion()->getFullyQualifiedName());
+//        $this->view->assign('expandedGroups', $expandedGroups);
+//        $this->view->assign('basePath', $rootPath . $viewHelperDocumentation->getSchema()->getPath());
         $resolver->getWriter()->publishDataFileForSchema(
             $viewHelperDocumentation->getSchema(),
             $path . '.rst',
