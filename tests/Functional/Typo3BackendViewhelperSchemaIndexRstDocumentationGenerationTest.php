@@ -86,6 +86,16 @@ class Typo3BackendViewhelperSchemaIndexRstDocumentationGenerationTest extends Te
     /**
      * @test
      */
+    public function subNamespacesCountIsIntegrated()
+    {
+        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
+        $index = 7;
+        $this->assertSame('3 Sub Namespaces' . PHP_EOL, $output[$index]);
+    }
+
+    /**
+     * @test
+     */
     public function tocTreeContainsSubDirectoriesAsExpected()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
