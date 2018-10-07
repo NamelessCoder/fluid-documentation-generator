@@ -26,6 +26,9 @@ class RstExporter implements ExporterInterface
      */
     private $generator;
 
+    /**
+     * @var null|string
+     */
     private $rootUrl;
 
     /**
@@ -72,7 +75,12 @@ class RstExporter implements ExporterInterface
 
     public function exportRoot(bool $forceUpdate = false): void
     {
-        $vendors = DataFileResolver::getInstance()->resolveInstalledVendors();
+        $resolver = DataFileResolver::getInstance();
+        if (!$forceUpdate && file_exists($resolver->getPublicDirectoryPath() . 'Index.rst')) {
+            return;
+        }
+
+        $vendors = $resolver->resolveInstalledVendors();
         // better to put the output together here, because fluid tends to mess up the empty lines
         // that are important to proper rst rendering
         $toctree = [];
@@ -84,7 +92,7 @@ class RstExporter implements ExporterInterface
             }
         }
         $this->view->assign('tocTree', $toctree);
-        DataFileResolver::getInstance()->getWriter()->publishDataFile(
+        $resolver->getWriter()->publishDataFile(
             'Index.rst',
             $this->view->render('Root')
         );
@@ -92,10 +100,12 @@ class RstExporter implements ExporterInterface
 
     public function exportVendor(SchemaVendor $vendor): void
     {
+        // not needed in this export
     }
 
     public function exportPackage(SchemaPackage $package): void
     {
+        // not needed in this export
     }
 
     public function exportSchema(ProcessedSchema $processedSchema, bool $forceUpdate = false): void
@@ -106,24 +116,16 @@ class RstExporter implements ExporterInterface
         }
         $schema = $processedSchema->getSchema();
         $headline = $schema->getPackage()->getVendor()->getVendorName() . '/' . $schema->getPackage()->getPackageName();
-        $decorationHeadlineLength = strlen($headline);
-        $headlineDecoration = array_pad([], $decorationHeadlineLength, '=');
-        $toctree = [];
+        $headlineDecoration = array_pad([], strlen($headline), '=');
         $subGroupsCount = \count($processedSchema->getDocumentationTree()->getSubGroups());
-        if ($subGroupsCount > 0) {
-            $toctree[] = $this->intend . '*/Index' . PHP_EOL;
-        }
         $viewHelpers = $processedSchema->getDocumentationTree()->getDocumentedViewHelpers();
-        foreach ($viewHelpers as $viewHelper) {
-            $toctree[] = $this->intend . $viewHelper->getLocalName() . PHP_EOL;
-        }
         $this->view->assignMultiple([
             'headline' => $headline,
             'headlineDecoration' => implode('', $headlineDecoration),
             'rootPath' => '../../../',
             'subGroups' => $subGroupsCount,
             'viewHelpers' => \count($viewHelpers),
-            'tocTree' => $toctree,
+            'tocTree' => $this->getTocTree($viewHelpers, $subGroupsCount),
         ]);
         $resolver->getWriter()->publishDataFileForSchema(
             $processedSchema,
@@ -135,7 +137,6 @@ class RstExporter implements ExporterInterface
     public function exportViewHelper(ViewHelperDocumentation $viewHelperDocumentation, bool $forceUpdate = false): void
     {
         $resolver = DataFileResolver::getInstance();
-
         if (!$forceUpdate && file_exists($resolver->getPublicDirectoryPath() . $viewHelperDocumentation->getSchema()->getPath() . $viewHelperDocumentation->getPath() . '.rst')) {
             return;
         }
@@ -144,8 +145,7 @@ class RstExporter implements ExporterInterface
         $rootPath = $backPath . '../../../';
 
         $headline = $viewHelperDocumentation->getName();
-        $decorationHeadlineLength = strlen($headline);
-        $headlineDecoration = array_pad([], $decorationHeadlineLength, '=');
+        $headlineDecoration = array_pad([], strlen($headline), '=');
 
         $arguments = [];
         foreach ($viewHelperDocumentation->getArgumentDefinitions() as $argumentDefinition) {
@@ -181,6 +181,10 @@ class RstExporter implements ExporterInterface
     public function exportViewHelperGroup(ViewHelperDocumentationGroup $viewHelperDocumentationGroup, bool $forceUpdate = false): void
     {
         $resolver = DataFileResolver::getInstance();
+        if (!$forceUpdate && file_exists($resolver->getPublicDirectoryPath() . $viewHelperDocumentationGroup->getPath() . 'Index.rst')) {
+            return;
+        }
+
         $groupPath = $viewHelperDocumentationGroup->getPath() . DIRECTORY_SEPARATOR;
         $backPath = str_repeat('../', substr_count($groupPath, '/'));
         $rootPath = $backPath . '../../../';
@@ -189,6 +193,23 @@ class RstExporter implements ExporterInterface
         $headlineDecoration = array_pad([], strlen($headline), '=');
         $viewHelpers = $viewHelperDocumentationGroup->getDocumentedViewHelpers();
         $subGroupsCount = \count($viewHelperDocumentationGroup->getSubGroups());
+        $this->view->assignMultiple([
+            'headline' => $headline,
+            'headlineDecoration' => implode('', $headlineDecoration),
+            'rootPath' => $rootPath,
+            'viewHelpers' => \count($viewHelpers),
+            'subGroups' => $subGroupsCount,
+            'tocTree' => $this->getTocTree($viewHelpers, $subGroupsCount),
+        ]);
+        $resolver->getWriter()->publishDataFileForSchema(
+            $viewHelperDocumentationGroup->getSchema(),
+            $groupPath . 'Index.rst',
+            $this->view->render('ViewHelperGroup')
+        );
+    }
+
+    protected function getTocTree(array $viewHelpers, int $subGroupsCount): array
+    {
         $toctree = [];
         if ($subGroupsCount > 0) {
             $toctree[] = $this->intend . '*/Index' . PHP_EOL;
@@ -196,18 +217,6 @@ class RstExporter implements ExporterInterface
         foreach ($viewHelpers as $viewHelper) {
             $toctree[] = $this->intend . $viewHelper->getLocalName() . PHP_EOL;
         }
-        $this->view->assignMultiple([
-            'headline' => $headline,
-            'headlineDecoration' => implode('', $headlineDecoration),
-            'rootPath' => $rootPath,
-            'viewHelpers' => \count($viewHelpers),
-            'subGroups' => $subGroupsCount,
-            'tocTree' => $toctree,
-        ]);
-        $resolver->getWriter()->publishDataFileForSchema(
-            $viewHelperDocumentationGroup->getSchema(),
-            $groupPath . 'Index.rst',
-            $this->view->render('ViewHelperGroup')
-        );
+        return $toctree;
     }
 }
