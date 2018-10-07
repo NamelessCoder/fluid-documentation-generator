@@ -22,7 +22,9 @@
     "bin/generate-fluid-documentation.php"
   ],
   "require-dev": {
+    "ext-json": "*",
     "phpunit/phpunit": "^7.1",
-    "mikey179/vfsStream": "^1.6"
+    "mikey179/vfsStream": "^1.6",
+    "php-coveralls/php-coveralls": "^2.1"
   }
 }

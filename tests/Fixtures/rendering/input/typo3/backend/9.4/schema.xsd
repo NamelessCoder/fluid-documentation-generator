@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers">
+    <xsd:element name="avatar">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[Render the avatar img tag for a given backend user
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:anySimpleType" name="backendUser" default="0">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[uid of the backend user]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="size" default="32">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[width and height of the image]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="showIcon" default="false">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[show the record icon as well]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="link.editRecord">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[Use this ViewHelper to provide edit links to records. The ViewHelper will
+pass the uid and table to FormEngine.
+
+The uid must be given as a positive integer.
+For new records, use the newRecordViewHelper
+
+= Examples =
+
+<code title="Link to the record-edit action passed to FormEngine">
+<be:link.editRecord uid="42" table="a_table" returnUrl="foo/bar" />
+</code>
+<output>
+<a href="/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar">
+  Edit record
+</a>
+</output>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:anySimpleType" name="additionalAttributes" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="data" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="class" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="dir" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="id" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="lang" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="style" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="title" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="onclick" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="uid" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[uid of record to be edited]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="table" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[target database table]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="returnUrl" default="''">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="link.newRecord">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[Use this ViewHelper to provide 'create new record' links.
+The ViewHelper will pass the command to FormEngine.
+
+The table argument is mandatory, it decides what record is to be created.
+
+The pid argument will put the new record on this page, if 0 given it will
+be placed to the root page.
+
+The uid argument accepts only negative values. If this is given, the new
+record will be placed (by sorting field) behind the record with the uid.
+It will end up on the same pid as this given record, so the pid must not
+be given explicitly by pid argument.
+
+An exception will be thrown, if both uid and pid are given.
+An exception will be thrown, if the uid argument is not a negative integer.
+
+To edit records, use the editRecordViewHelper
+
+= Examples =
+
+<code title="Link to create a new record of a_table after record 17 on the same pid">
+<be:link.newRecord table="a_table" returnUrl="foo/bar" uid="-17"/>
+</code>
+<output>
+<a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
+  Edit record
+</a>
+</output>
+
+<code title="Link to create a new record of a_table on root page">
+<be:link.newRecord table="a_table" returnUrl="foo/bar""/>
+</code>
+<output>
+<a href="/typo3/index.php?route=/record/edit&edit[a_table][]=new&returnUrl=foo/bar">
+  Edit record
+</a>
+</output>
+
+<code title="Link to create a new record of a_table on page 17">
+<be:link.newRecord table="a_table" returnUrl="foo/bar" pid="17"/>
+</code>
+<output>
+<a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
+  Edit record
+</a>
+</output>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:anySimpleType" name="additionalAttributes" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Additional tag attributes. They will be added directly to the resulting HTML tag.]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="data" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Additional data-* attributes. They will each be added with a "data-" prefix.]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="class" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[CSS class(es) for this element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="dir" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Text direction for this HTML element. Allowed strings: "ltr" (left to right), "rtl" (right to left)]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="id" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Unique (in this file) identifier for this HTML element.]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="lang" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Language for this element. Use short names specified in RFC 1766]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="style" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Individual CSS styles for this element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="title" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Tooltip text of element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="accesskey" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Keyboard shortcut to access this element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:integer" name="tabindex" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Specifies the tab order of this element]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="onclick" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[JavaScript evaluated for the onclick event]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="uid" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[uid < 0 will insert the record after the given uid]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="pid" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[the page id where the record will be created]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="table" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[target database table]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="returnUrl" default="''">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="moduleLayout">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[A view helper for having properly styled backend modules.
+It is recommended to use it in Fluid Layouts.
+It will render the required HTML for the doc header.
+All module specific output and further configuration of the doc header
+must be rendered as children of this view helper.
+= Examples =
+<code>
+<be:moduleLayout>
+    <f:render section="content" />
+</be:moduleLayout>
+</code>
+<output>
+<!-- HTML of the backend module -->
+</output>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="moduleLayout.button.linkButton">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[A view helper for adding a link button to the doc header area.
+It must be a child of <be:moduleLayout>
+= Examples =
+<code>
+<be:moduleLayout>
+     <be:moduleLayout.button.linkButton
+         icon="actions-add"
+         title="Add record')}"
+         link="{be:uri.newRecord(table: 'tx_my_table')}"
+     />
+</be:moduleLayout>
+</code>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:string" name="icon" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Icon identifier for the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="title" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Title of the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="disabled" default="false">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Whether the button is disabled]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="showLabel" default="false">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Defines whether to show the title as a label within the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="position" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Position of the button (left or right)]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:integer" name="group" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Button group of the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="link" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Link for the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="moduleLayout.button.shortcutButton">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[A view helper for adding a shortcut button to the doc header area.
+It must be a child of <be:moduleLayout>
+= Examples =
+<code>
+<be:moduleLayout>
+     <be:moduleLayout.button.shortcutButton displayName="Shortcut label" />
+</be:moduleLayout>
+</code>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:string" name="icon" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Icon identifier for the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="title" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Title of the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="disabled" default="false">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Whether the button is disabled]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="showLabel" default="false">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[Defines whether to show the title as a label within the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="position" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Position of the button (left or right)]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:integer" name="group" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Button group of the button]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="displayName" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Name for the shortcut]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="getVars" default="array (&#10;)">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[List of additional GET variables to store. The current id, module and all module arguments will always be stored]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="moduleLayout.menuItem">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[A view helper for adding a menu item to a doc header menu.
+It must be a child of <be:moduleLayout.menu>
+= Examples =
+<code>
+<be:moduleLayout>
+    <be:moduleLayout.menu identifier="MenuIdentifier">
+         <be:moduleLayout.menuItem label="Menu item 1" uri="{f:uri.action(action: 'index')}"/>
+    </be:moduleLayout.menu>
+</be:moduleLayout>
+</code>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:string" name="label" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Label of the menu item]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="uri" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Action uri]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="moduleLayout.menu">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[A view helper for adding a menu to the doc header area.
+It must be a child of <be:moduleLayout> and accepts
+only <be:moduleLayout.menuItem> view helpers as children.
+= Examples =
+<code>
+<be:moduleLayout>
+    <be:moduleLayout.menu identifier="MenuIdentifier">
+         <be:moduleLayout.menuItem label="Menu item 1" uri="{f:uri.action(action: 'index')}"/>
+    </be:moduleLayout.menu>
+</be:moduleLayout>
+</code>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:string" name="identifier" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Identifier of the menu]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="moduleLink">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[Create internal link within backend app
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:string" name="route" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[The route to link to]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="arguments" default="array (&#10;)">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Additional link arguments]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="query" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Additional link arguments as string]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="currentUrlParameterName" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[Add current url as given parameter]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="uri.editRecord">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[Use this ViewHelper to provide edit links (only the uri) to records. The ViewHelper will
+pass the uid and table to FormEngine.
+
+The uid must be given as a positive integer.
+For new records, use the newRecordViewHelper
+
+= Examples =
+
+<code title="URI to the record-edit action passed to FormEngine">
+<be:uri.editRecord uid="42" table="a_table" returnUrl="foo/bar" />
+</code>
+<output>
+/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar
+</output>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:anySimpleType" name="uid" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[uid of record to be edited, 0 for creation]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="table" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[target database table]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="returnUrl" default="''">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="uri.newRecord">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[Use this ViewHelper to provide 'create new record' links.
+The ViewHelper will pass the command to FormEngine.
+
+The table argument is mandatory, it decides what record is to be created.
+
+The pid argument will put the new record on this page, if 0 given it will
+be placed to the root page.
+
+The uid argument accepts only negative values. If this is given, the new
+record will be placed (by sorting field) behind the record with the uid.
+It will end up on the same pid as this given record, so the pid must not
+be given explicitly by pid argument.
+
+An exception will be thrown, if both uid and pid are given.
+An exception will be thrown, if the uid argument is not a negative integer.
+
+To edit records, use the editRecordViewHelper
+
+= Examples =
+
+<code title="Uri to create a new record of a_table after record 17 on the same pid">
+<be:uri.newRecord table="a_table" returnUrl="foo/bar" uid="-17"/>
+</code>
+<output>
+ /typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar
+</output>
+
+<code title="Uri to create a new record of a_table on root page">
+<be:uri.newRecord table="a_table" returnUrl="foo/bar""/>
+</code>
+<output>
+ /typo3/index.php?route=/record/edit&edit[a_table][]=new&returnUrl=foo/bar
+</output>
+
+<code title="Uri to create a new record of a_table on page 17">
+<be:uri.newRecord table="a_table" returnUrl="foo/bar" pid="17"/>
+</code>
+<output>
+ /typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar
+</output>
+/]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType mixed="true">
+            <xsd:sequence>
+                <xsd:any minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute type="xsd:anySimpleType" name="uid" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[uid < 0 will insert the record after the given uid]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:anySimpleType" name="pid" default="NULL">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[the page id where the record will be created]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="table" default="NULL" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[target database table]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute type="xsd:string" name="returnUrl" default="''">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

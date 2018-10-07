@@ -1,7 +1,9 @@
 composer.lock
+vendor/
 public/*
 !public/.keep
 cache/*
 !cache/.keep
 schemas/*
 !schemas/.keep
+build/logs/

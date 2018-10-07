@@ -33,16 +33,16 @@ class SchemaDocumentationGeneratorTest extends TestCase
 
     protected function setUp()
     {
-        $this->vfs = vfsStream::setup('public');
+        $this->vfs = vfsStream::setup('outputDir');
         $this->vfs->addChild(vfsStream::newDirectory('cache'));
-        $resolver = DataFileResolver::getInstance(vfsStream::url('public'));
+        $resolver = DataFileResolver::getInstance(vfsStream::url('outputDir'));
         $resolver->setResourcesDirectory(__DIR__ . '/../../resources/');
         $resolver->setSchemasDirectory(__DIR__ . '/../Fixtures/schemas/');
         $this->subject = new SchemaDocumentationGenerator(
             [
                 new JsonExporter(''),
-                new XsdExporter(''),
-                new HtmlExporter('')
+                new XsdExporter(vfsStream::url('')),
+                new HtmlExporter(vfsStream::url(''))
             ],
             true
         );
@@ -51,40 +51,36 @@ class SchemaDocumentationGeneratorTest extends TestCase
     public function testGenerateResourcesForRoot(): void
     {
         $this->subject->generateFilesForRoot();
-        $folder = $this->vfs->getChild('public');
-        $this->assertSame('index.json', $folder->getChild('index.json')->getName());
-        $this->assertSame('index.html', $folder->getChild('index.html')->getName());
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/index.json'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/index.html'));
     }
 
     public function testGenerateResourcesForVendor(): void
     {
         $this->subject->generateFilesForVendor(new SchemaVendor('test'));
-        $folder = $this->vfs->getChild('public')->getChild('test');
-        $this->assertSame('index.json', $folder->getChild('index.json')->getName());
-        $this->assertSame('index.html', $folder->getChild('index.html')->getName());
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/index.json'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/index.html'));
     }
 
     public function testGenerateResourcesForPackage(): void
     {
         $this->subject->generateFilesForPackage(new SchemaPackage(new SchemaVendor('test'), 'test'));
-        $folder = $this->vfs->getChild('public')->getChild('test')->getChild('test');
-        $this->assertSame('index.json', $folder->getChild('index.json')->getName());
-        $this->assertSame('index.html', $folder->getChild('index.html')->getName());
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/index.json'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/index.html'));
     }
 
     public function testGenerateResourcesForSchema(): void
     {
         $schema = new Schema(new SchemaVersion(new SchemaPackage(new SchemaVendor('test'), 'test'), '1.0.0'));
         $this->subject->generateFilesForSchema($schema);
-        $folder = $this->vfs->getChild('public')->getChild('test')->getChild('test')->getChild('1.0.0');
-        $this->assertSame('tree.json', $folder->getChild('tree.json')->getName());
-        $this->assertSame('index.json', $folder->getChild('index.json')->getName());
-        $this->assertSame('index.html', $folder->getChild('index.html')->getName());
-        $this->assertSame('schema.xsd', $folder->getChild('schema.xsd')->getName());
-        $this->assertSame('Format', $folder->getChild('Format')->getName());
-        $this->assertSame('Json', $folder->getChild('Format')->getChild('Json')->getName());
-        $this->assertSame('Encode.html', $folder->getChild('Format')->getChild('Json')->getChild('Encode.html')->getName());
-        $this->assertSame('Decode.html', $folder->getChild('Format')->getChild('Json')->getChild('Decode.html')->getName());
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/1.0.0/tree.json'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/1.0.0/index.json'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/1.0.0/index.html'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/1.0.0/schema.xsd'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/1.0.0/Format'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/1.0.0/Format/Json'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/1.0.0/Format/Json/Encode.html'));
+        $this->assertTrue($this->vfs->hasChild('outputDir/public/test/test/1.0.0/Format/Json/Decode.html'));
     }
 
     public function testGenerateMachineResourceLinksForSchema(): void
@@ -94,8 +90,8 @@ class SchemaDocumentationGeneratorTest extends TestCase
             [
                 'JSON tree' => 'tree.json',
                 'JSON index' => 'index.json',
-                'XSD schema' => 'schema.xsd',
-                'HTML overview' => '',
+                'XSD schema' => 'vfs://schema.xsd',
+                'HTML overview' => 'vfs://',
             ],
             $this->subject->generateResourceLinksForSchema($schemaMock)
         );
@@ -108,7 +104,7 @@ class SchemaDocumentationGeneratorTest extends TestCase
         $this->assertSame(
             [
                 'JSON schema' => 'Root.json',
-                'HTML overview' => 'Root.html',
+                'HTML overview' => 'vfs://Root.html',
             ],
             $this->subject->generateResourceLinksForViewHelper($viewHelper)
         );
@@ -121,7 +117,7 @@ class SchemaDocumentationGeneratorTest extends TestCase
         $this->assertSame(
             [
                 'json' => 'Root.json',
-                'html' => 'Root.html',
+                'html' => 'vfs://Root.html',
             ],
             $this->subject->generateMachineResourceLinksForViewHelper($viewHelper)
         );

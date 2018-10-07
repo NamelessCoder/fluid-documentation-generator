@@ -6,9 +6,9 @@ namespace NamelessCoder\FluidDocumentationGenerator\Export;
 use NamelessCoder\FluidDocumentationGenerator\Data\DataFileResolver;
 use NamelessCoder\FluidDocumentationGenerator\Data\GraphDataHandler;
 use NamelessCoder\FluidDocumentationGenerator\Entity\Schema;
-use NamelessCoder\FluidDocumentationGenerator\ProcessedSchema;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaPackage;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaVendor;
+use NamelessCoder\FluidDocumentationGenerator\ProcessedSchema;
 use NamelessCoder\FluidDocumentationGenerator\SchemaDocumentationGenerator;
 use NamelessCoder\FluidDocumentationGenerator\ViewHelperDocumentation;
 use NamelessCoder\FluidDocumentationGenerator\ViewHelperDocumentationGroup;
@@ -53,7 +53,7 @@ class JsonExporter implements ExporterInterface
         ];
     }
 
-    public function exportRoot(): void
+    public function exportRoot(bool $forceUpdate): void
     {
         $resolver = DataFileResolver::getInstance();
         $index = [];
