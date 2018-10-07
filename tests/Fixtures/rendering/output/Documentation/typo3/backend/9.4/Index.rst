@@ -15,3 +15,4 @@ typo3/backend
    Avatar
    ModuleLayout
    ModuleLink
+

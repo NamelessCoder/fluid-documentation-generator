@@ -5,7 +5,7 @@ link.editRecord
 ===============
 
 
-        Use this ViewHelper to provide edit links to records. The ViewHelper will
+Use this ViewHelper to provide edit links to records. The ViewHelper will
 pass the uid and table to FormEngine.
 
 The uid must be given as a positive integer.
@@ -21,141 +21,88 @@ For new records, use the newRecordViewHelper
   Edit record
 </a>
 </output>
-    
 
 Arguments
 =========
 
 
-
-    
-* additionalAttributes
-
-* data
-
-* class
-
-* dir
-
-* id
-
-* lang
-
-* style
-
-* title
-
-* accesskey
-
-* tabindex
-
-* onclick
-
-* uid
-
-* table
-
-* returnUrl
-
-
-
-
-
-additionalAttributes (anySimpleType) 
-=================================
+additionalAttributes (anySimpleType)
+------------------------------------
 
 
 Additional tag attributes. They will be added directly to the resulting HTML tag.
 
-
-data (anySimpleType) 
-=================================
+data (anySimpleType)
+--------------------
 
 
 Additional data-* attributes. They will each be added with a &quot;data-&quot; prefix.
 
-
-class (string) 
-=================================
+class (string)
+--------------
 
 
 CSS class(es) for this element
 
-
-dir (string) 
-=================================
+dir (string)
+------------
 
 
 Text direction for this HTML element. Allowed strings: &quot;ltr&quot; (left to right), &quot;rtl&quot; (right to left)
 
-
-id (string) 
-=================================
+id (string)
+-----------
 
 
 Unique (in this file) identifier for this HTML element.
 
-
-lang (string) 
-=================================
+lang (string)
+-------------
 
 
 Language for this element. Use short names specified in RFC 1766
 
-
-style (string) 
-=================================
+style (string)
+--------------
 
 
 Individual CSS styles for this element
 
-
-title (string) 
-=================================
+title (string)
+--------------
 
 
 Tooltip text of element
 
-
-accesskey (string) 
-=================================
+accesskey (string)
+------------------
 
 
 Keyboard shortcut to access this element
 
-
-tabindex (integer) 
-=================================
+tabindex (integer)
+------------------
 
 
 Specifies the tab order of this element
 
-
-onclick (string) 
-=================================
+onclick (string)
+----------------
 
 
 JavaScript evaluated for the onclick event
 
-
-uid (anySimpleType) 
-=================================
+uid (anySimpleType)
+-------------------
 
 
 uid of record to be edited
 
-
-table (string) 
-=================================
+table (string)
+--------------
 
 
 target database table
 
-
-returnUrl (string) 
-=================================
-
-
-
-
-
+returnUrl (string)
+------------------

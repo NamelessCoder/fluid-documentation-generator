@@ -5,7 +5,7 @@ moduleLayout.menuItem
 =====================
 
 
-        A view helper for adding a menu item to a doc header menu.
+A view helper for adding a menu item to a doc header menu.
 It must be a child of <be:moduleLayout.menu>
 = Examples =
 <code>
@@ -15,27 +15,19 @@ It must be a child of <be:moduleLayout.menu>
     </be:moduleLayout.menu>
 </be:moduleLayout>
 </code>
-    
 
 Arguments
 =========
 
 
-
-
-
-
-label (string) 
-=================================
+label (string)
+--------------
 
 
 Label of the menu item
 
-
-uri (string) 
-=================================
+uri (string)
+------------
 
 
 Action uri
-
-

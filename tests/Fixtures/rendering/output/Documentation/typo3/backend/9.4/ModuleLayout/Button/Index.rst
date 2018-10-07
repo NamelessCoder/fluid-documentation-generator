@@ -1,13 +1,18 @@
 .. include:: ../../../../../Includes.txt
 
-===================
-moduleLayout.button
-===================
+======
+button
+======
 
-2 ViewHelpers documented
+
+* 2 ViewHelpers documented
 
 .. toctree::
    :titlesonly:
+   :glob:
 
    LinkButton
    ShortcutButton
+
+
+

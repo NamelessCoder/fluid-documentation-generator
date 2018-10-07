@@ -5,7 +5,7 @@ uri.editRecord
 ==============
 
 
-        Use this ViewHelper to provide edit links (only the uri) to records. The ViewHelper will
+Use this ViewHelper to provide edit links (only the uri) to records. The ViewHelper will
 pass the uid and table to FormEngine.
 
 The uid must be given as a positive integer.
@@ -19,34 +19,22 @@ For new records, use the newRecordViewHelper
 <output>
 /typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar
 </output>
-    
 
 Arguments
 =========
 
 
-
-
-
-
-uid (anySimpleType) 
-=================================
+uid (anySimpleType)
+-------------------
 
 
 uid of record to be edited, 0 for creation
 
-
-table (string) 
-=================================
+table (string)
+--------------
 
 
 target database table
 
-
-returnUrl (string) 
-=================================
-
-
-
-
-
+returnUrl (string)
+------------------

@@ -5,42 +5,34 @@ moduleLink
 ==========
 
 
-        Create internal link within backend app
-    
+Create internal link within backend app
 
 Arguments
 =========
 
 
-
-
-
-
-route (string) 
-=================================
+route (string)
+--------------
 
 
 The route to link to
 
+arguments (anySimpleType)
+-------------------------
 
-arguments (anySimpleType) 
-=================================
 
+Default: array ()
 
 Additional link arguments
 
-
-query (string) 
-=================================
+query (string)
+--------------
 
 
 Additional link arguments as string
 
-
-currentUrlParameterName (string) 
-=================================
+currentUrlParameterName (string)
+--------------------------------
 
 
 Add current url as given parameter
-
-

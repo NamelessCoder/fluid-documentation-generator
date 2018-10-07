@@ -5,7 +5,7 @@ link.newRecord
 ==============
 
 
-        Use this ViewHelper to provide 'create new record' links.
+Use this ViewHelper to provide 'create new record' links.
 The ViewHelper will pass the command to FormEngine.
 
 The table argument is mandatory, it decides what record is to be created.
@@ -51,150 +51,94 @@ To edit records, use the editRecordViewHelper
   Edit record
 </a>
 </output>
-    
 
 Arguments
 =========
 
 
-
-    
-* additionalAttributes
-
-* data
-
-* class
-
-* dir
-
-* id
-
-* lang
-
-* style
-
-* title
-
-* accesskey
-
-* tabindex
-
-* onclick
-
-* uid
-
-* pid
-
-* table
-
-* returnUrl
-
-
-
-
-
-additionalAttributes (anySimpleType) 
-=================================
+additionalAttributes (anySimpleType)
+------------------------------------
 
 
 Additional tag attributes. They will be added directly to the resulting HTML tag.
 
-
-data (anySimpleType) 
-=================================
+data (anySimpleType)
+--------------------
 
 
 Additional data-* attributes. They will each be added with a &quot;data-&quot; prefix.
 
-
-class (string) 
-=================================
+class (string)
+--------------
 
 
 CSS class(es) for this element
 
-
-dir (string) 
-=================================
+dir (string)
+------------
 
 
 Text direction for this HTML element. Allowed strings: &quot;ltr&quot; (left to right), &quot;rtl&quot; (right to left)
 
-
-id (string) 
-=================================
+id (string)
+-----------
 
 
 Unique (in this file) identifier for this HTML element.
 
-
-lang (string) 
-=================================
+lang (string)
+-------------
 
 
 Language for this element. Use short names specified in RFC 1766
 
-
-style (string) 
-=================================
+style (string)
+--------------
 
 
 Individual CSS styles for this element
 
-
-title (string) 
-=================================
+title (string)
+--------------
 
 
 Tooltip text of element
 
-
-accesskey (string) 
-=================================
+accesskey (string)
+------------------
 
 
 Keyboard shortcut to access this element
 
-
-tabindex (integer) 
-=================================
+tabindex (integer)
+------------------
 
 
 Specifies the tab order of this element
 
-
-onclick (string) 
-=================================
+onclick (string)
+----------------
 
 
 JavaScript evaluated for the onclick event
 
-
-uid (anySimpleType) 
-=================================
+uid (anySimpleType)
+-------------------
 
 
 uid &lt; 0 will insert the record after the given uid
 
-
-pid (anySimpleType) 
-=================================
+pid (anySimpleType)
+-------------------
 
 
 the page id where the record will be created
 
-
-table (string) 
-=================================
+table (string)
+--------------
 
 
 target database table
 
-
-returnUrl (string) 
-=================================
-
-
-
-
-
+returnUrl (string)
+------------------

@@ -5,7 +5,7 @@ uri.newRecord
 =============
 
 
-        Use this ViewHelper to provide 'create new record' links.
+Use this ViewHelper to provide 'create new record' links.
 The ViewHelper will pass the command to FormEngine.
 
 The table argument is mandatory, it decides what record is to be created.
@@ -45,41 +45,28 @@ To edit records, use the editRecordViewHelper
 <output>
  /typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar
 </output>
-    
 
 Arguments
 =========
 
 
-
-
-
-
-uid (anySimpleType) 
-=================================
+uid (anySimpleType)
+-------------------
 
 
 uid &lt; 0 will insert the record after the given uid
 
-
-pid (anySimpleType) 
-=================================
+pid (anySimpleType)
+-------------------
 
 
 the page id where the record will be created
 
-
-table (string) 
-=================================
+table (string)
+--------------
 
 
 target database table
 
-
-returnUrl (string) 
-=================================
-
-
-
-
-
+returnUrl (string)
+------------------
