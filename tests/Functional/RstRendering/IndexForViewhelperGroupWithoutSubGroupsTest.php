@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NamelessCoder\FluidDocumentationGenerator\Tests\Functional;
-
+namespace NamelessCoder\FluidDocumentationGenerator\Tests\Functional\RstRendering;
 
 use NamelessCoder\FluidDocumentationGenerator\Data\DataFileResolver;
 use NamelessCoder\FluidDocumentationGenerator\Entity\Schema;
@@ -12,7 +11,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 
-class Typo3BackendViewhelperSecondLevelDocumentationGenerationTest extends TestCase
+class IndexForViewhelperGroupWithoutSubGroupsTest extends TestCase
 {
     /**
      * @var vfsStreamDirectory
@@ -23,21 +22,21 @@ class Typo3BackendViewhelperSecondLevelDocumentationGenerationTest extends TestC
      * the generated file is compared against this fixture file
      * @var string
      */
-    private $fixtureFilePath = __DIR__ . '/../Fixtures/rendering/output/Documentation/typo3/backend/9.4/Link/EditRecord.rst';
+    private $fixtureFilePath = __DIR__ . '/../../Fixtures/rendering/output/Documentation/typo3/backend/9.4/Link/Index.rst';
 
     /**
      * output of the generation process
      * @var string
      */
-    private $generatedFilePath = 'outputDir/public/typo3/backend/9.4/Link/EditRecord.rst';
+    private $generatedFilePath = 'outputDir/public/typo3/backend/9.4/Link/Index.rst';
 
     protected function setUp()
     {
         $this->vfs = vfsStream::setup('outputDir');
         $this->vfs->addChild(vfsStream::newDirectory('cache'));
         $dataFileResolver = DataFileResolver::getInstance(vfsStream::url('outputDir'));
-        $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../resources/');
-        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../Fixtures/rendering/input/');
+        $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../../resources/');
+        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../../Fixtures/rendering/input/');
         $schemaDocumentationGenerator = new SchemaDocumentationGenerator(
             [
                 new RstExporter()
@@ -80,7 +79,7 @@ class Typo3BackendViewhelperSecondLevelDocumentationGenerationTest extends TestC
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         // first line is include, then empty, then upper headline decoration, then text -> fourth line
         $index = 3;
-        $this->assertSame('link.editRecord' . PHP_EOL, $output[$index]);
+        $this->assertSame('link' . PHP_EOL, $output[$index]);
     }
 
     /**
@@ -101,11 +100,22 @@ class Typo3BackendViewhelperSecondLevelDocumentationGenerationTest extends TestC
     /**
      * @test
      */
-    public function descriptionGetsRendered()
+    public function viewHelperCountIsIntegrated()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 7;
-        $this->assertSame('Use this ViewHelper to provide edit links to records. The ViewHelper will' . PHP_EOL, $output[$index]);
+        $this->assertSame('* 2 ViewHelpers documented' . PHP_EOL, $output[$index]);
+    }
+
+    /**
+     * @test
+     */
+    public function tocTreeContainsSubDirectoriesAsExpected()
+    {
+        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
+        $index = 13;
+        $this->assertSame('   EditRecord' . PHP_EOL, $output[$index]);
+        $this->assertSame('   NewRecord' . PHP_EOL, $output[$index + 1]);
     }
 
     /**
@@ -113,7 +123,7 @@ class Typo3BackendViewhelperSecondLevelDocumentationGenerationTest extends TestC
      */
     public function generatedFileIsSameAsFixture()
     {
-        $this->assertSame(file_get_contents($this->fixtureFilePath),
-            file_get_contents($this->vfs->getChild($this->generatedFilePath)->url()));
+        $this->assertSame(trim(file_get_contents($this->fixtureFilePath)),
+            trim(file_get_contents($this->vfs->getChild($this->generatedFilePath)->url())));
     }
 }

@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-namespace NamelessCoder\FluidDocumentationGenerator\Tests\Functional;
+namespace NamelessCoder\FluidDocumentationGenerator\Tests\Functional\RstRendering;
+
 
 use NamelessCoder\FluidDocumentationGenerator\Data\DataFileResolver;
 use NamelessCoder\FluidDocumentationGenerator\Entity\Schema;
@@ -11,7 +12,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 
-class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTest extends TestCase
+class ViewHelperFileFirstLevelTest extends TestCase
 {
     /**
      * @var vfsStreamDirectory
@@ -22,21 +23,21 @@ class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTes
      * the generated file is compared against this fixture file
      * @var string
      */
-    private $fixtureFilePath = __DIR__ . '/../Fixtures/rendering/output/Documentation/typo3/backend/9.4/ModuleLayout/Index.rst';
+    private $fixtureFilePath = __DIR__ . '/../../Fixtures/rendering/output/Documentation/typo3/backend/9.4/ModuleLink.rst';
 
     /**
      * output of the generation process
      * @var string
      */
-    private $generatedFilePath = 'outputDir/public/typo3/backend/9.4/ModuleLayout/Index.rst';
+    private $generatedFilePath = 'outputDir/public/typo3/backend/9.4/ModuleLink.rst';
 
     protected function setUp()
     {
         $this->vfs = vfsStream::setup('outputDir');
         $this->vfs->addChild(vfsStream::newDirectory('cache'));
         $dataFileResolver = DataFileResolver::getInstance(vfsStream::url('outputDir'));
-        $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../resources/');
-        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../Fixtures/rendering/input/');
+        $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../../resources/');
+        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../../Fixtures/rendering/input/');
         $schemaDocumentationGenerator = new SchemaDocumentationGenerator(
             [
                 new RstExporter()
@@ -68,7 +69,7 @@ class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTes
     public function includeClausePointsToSettingsCfg()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        $this->assertSame('.. include:: ../../../../Includes.txt' . PHP_EOL, $output[0]);
+        $this->assertSame('.. include:: ../../../Includes.txt' . PHP_EOL, $output[0]);
     }
 
     /**
@@ -79,7 +80,7 @@ class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTes
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         // first line is include, then empty, then upper headline decoration, then text -> fourth line
         $index = 3;
-        $this->assertSame('moduleLayout' . PHP_EOL, $output[$index]);
+        $this->assertSame('moduleLink' . PHP_EOL, $output[$index]);
     }
 
     /**
@@ -100,33 +101,11 @@ class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTes
     /**
      * @test
      */
-    public function viewHelperCountIsIntegrated()
+    public function descriptionGetsRendered()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 7;
-        $this->assertSame('* 2 ViewHelpers documented' . PHP_EOL, $output[$index]);
-    }
-
-    /**
-     * @test
-     */
-    public function subNamespacesCountIsIntegrated()
-    {
-        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        $index = 8;
-        $this->assertSame('* 1 Sub namespaces' . PHP_EOL, $output[$index]);
-    }
-
-    /**
-     * @test
-     */
-    public function tocTreeContainsSubDirectoriesAsExpected()
-    {
-        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        $index = 14;
-        $this->assertSame('   */Index' . PHP_EOL, $output[$index]);
-        $this->assertSame('   MenuItem' . PHP_EOL, $output[$index + 1]);
-        $this->assertSame('   Menu' . PHP_EOL, $output[$index + 2]);
+        $this->assertSame('Create internal link within backend app' . PHP_EOL, $output[$index]);
     }
 
     /**
@@ -134,7 +113,7 @@ class Typo3BackendViewhelperGroupWithSubGroupsIndexRstDocumentationGenerationTes
      */
     public function generatedFileIsSameAsFixture()
     {
-        $this->assertSame(trim(file_get_contents($this->fixtureFilePath)),
-            trim(file_get_contents($this->vfs->getChild($this->generatedFilePath)->url())));
+        $this->assertSame(file_get_contents($this->fixtureFilePath),
+            file_get_contents($this->vfs->getChild($this->generatedFilePath)->url()));
     }
 }

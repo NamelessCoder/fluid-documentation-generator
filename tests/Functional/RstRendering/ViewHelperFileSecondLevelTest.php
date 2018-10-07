@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace NamelessCoder\FluidDocumentationGenerator\Tests\Functional;
+namespace NamelessCoder\FluidDocumentationGenerator\Tests\Functional\RstRendering;
 
 
 use NamelessCoder\FluidDocumentationGenerator\Data\DataFileResolver;
@@ -12,7 +12,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 
-class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCase
+class ViewHelperFileSecondLevelTest extends TestCase
 {
     /**
      * @var vfsStreamDirectory
@@ -23,21 +23,21 @@ class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCa
      * the generated file is compared against this fixture file
      * @var string
      */
-    private $fixtureFilePath = __DIR__ . '/../Fixtures/rendering/output/Documentation/typo3/backend/9.4/ModuleLink.rst';
+    private $fixtureFilePath = __DIR__ . '/../../Fixtures/rendering/output/Documentation/typo3/backend/9.4/Link/EditRecord.rst';
 
     /**
      * output of the generation process
      * @var string
      */
-    private $generatedFilePath = 'outputDir/public/typo3/backend/9.4/ModuleLink.rst';
+    private $generatedFilePath = 'outputDir/public/typo3/backend/9.4/Link/EditRecord.rst';
 
     protected function setUp()
     {
         $this->vfs = vfsStream::setup('outputDir');
         $this->vfs->addChild(vfsStream::newDirectory('cache'));
         $dataFileResolver = DataFileResolver::getInstance(vfsStream::url('outputDir'));
-        $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../resources/');
-        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../Fixtures/rendering/input/');
+        $dataFileResolver->setResourcesDirectory(__DIR__ . '/../../../resources/');
+        $dataFileResolver->setSchemasDirectory(__DIR__ . '/../../Fixtures/rendering/input/');
         $schemaDocumentationGenerator = new SchemaDocumentationGenerator(
             [
                 new RstExporter()
@@ -69,7 +69,7 @@ class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCa
     public function includeClausePointsToSettingsCfg()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        $this->assertSame('.. include:: ../../../Includes.txt' . PHP_EOL, $output[0]);
+        $this->assertSame('.. include:: ../../../../Includes.txt' . PHP_EOL, $output[0]);
     }
 
     /**
@@ -80,7 +80,7 @@ class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCa
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         // first line is include, then empty, then upper headline decoration, then text -> fourth line
         $index = 3;
-        $this->assertSame('moduleLink' . PHP_EOL, $output[$index]);
+        $this->assertSame('link.editRecord' . PHP_EOL, $output[$index]);
     }
 
     /**
@@ -105,7 +105,7 @@ class Typo3BackendViewhelperFirstLevelDocumentationGenerationTest extends TestCa
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         $index = 7;
-        $this->assertSame('Create internal link within backend app' . PHP_EOL, $output[$index]);
+        $this->assertSame('Use this ViewHelper to provide edit links to records. The ViewHelper will' . PHP_EOL, $output[$index]);
     }
 
     /**
