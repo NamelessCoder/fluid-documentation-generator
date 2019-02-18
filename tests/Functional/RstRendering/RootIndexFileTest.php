@@ -18,12 +18,6 @@ class RootIndexFileTest extends TestCase
     private $vfs;
 
     /**
-     * the generated file is compared against this fixture file
-     * @var string
-     */
-    private $fixtureFilePath = __DIR__ . '/../../Fixtures/rendering/output/Documentation/Index.rst';
-
-    /**
      * output of the generation process
      * @var string
      */
@@ -67,8 +61,8 @@ class RootIndexFileTest extends TestCase
     public function headlineAsExpected()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        // first line is include, then empty, then upper headline decoration, then text -> fourth line
-        $index = 3;
+        // include, empty, anchor, empty, upper headline decoration, text, lower headline decoration
+        $index = 5;
         $this->assertSame('Fluid ViewHelper Documentation' . PHP_EOL, $output[$index]);
     }
 
@@ -78,8 +72,8 @@ class RootIndexFileTest extends TestCase
     public function headlineIsProperlyDecorated()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        // first line is include, then empty, then upper headline decoration, then text, then lower headline decoration
-        $headlineTextIndex = 3;
+        // include, empty, anchor, empty, upper headline decoration, text, lower headline decoration
+        $headlineTextIndex = 5;
         $lengthOfHeadline = strlen($output[$headlineTextIndex]);
         $this->assertSame($lengthOfHeadline, strlen($output[$headlineTextIndex - 1]));
         $this->assertRegExp('/^[=]+$/', $output[$headlineTextIndex - 1]);
@@ -93,17 +87,8 @@ class RootIndexFileTest extends TestCase
     public function tocTreeContainsSubDirectoriesAsExpected()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        $index = 11;
-        $this->assertSame('   typo3/backend/9.4/Index' . PHP_EOL, $output[$index]);
-        $this->assertSame('   typo3/backend/9.5/Index' . PHP_EOL, $output[$index + 1]);
-    }
-
-    /**
-     * @test
-     */
-    public function generatedFileIsSameAsFixture()
-    {
-        $this->assertSame(file_get_contents($this->fixtureFilePath),
-            file_get_contents($this->vfs->getChild($this->generatedFilePath)->url()));
+        $output = implode(PHP_EOL, $output);
+        $this->assertStringContainsString('   typo3/backend/9.4/Index' . PHP_EOL, $output);
+        $this->assertStringContainsString('   typo3/backend/9.5/Index' . PHP_EOL, $output);
     }
 }
