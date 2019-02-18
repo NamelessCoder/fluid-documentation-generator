@@ -7,3 +7,4 @@ cache/*
 schemas/*
 !schemas/.keep
 build/logs/
+.idea/
