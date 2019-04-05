@@ -11,12 +11,9 @@ Fluid ViewHelper Documentation
 This is a complete reference of all available Fluid ViewHelper within TYPO3 CMS.
 This documentation is generated from PHP Source code of TYPO3 CMS.
 
-.. note::
-
-   This is a first draft, updated manually.
-
-Current plans are to automate the rendering and to update the source code to
-provide a fully useful reference of all provided ViewHelper by TYPO3 CMS.
+This reference is auto generated from TYPO3 CMS 9.5 source code. Right now there is no
+auto generation for TYPO3 versions below 9.5. You can find a hand written reference
+for 6.2 at https://docs.typo3.org/typo3cms/ExtbaseGuide/6.2/Fluid/ViewHelper/Index.html.
 
 Right now this might look ugly in some places, e.g. ``= EXAMPLE =`` and rendered
 HTML markup like ``<code>``. This will be polished in the future.  The current
