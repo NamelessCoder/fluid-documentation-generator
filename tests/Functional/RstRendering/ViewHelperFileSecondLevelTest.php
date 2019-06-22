@@ -79,7 +79,7 @@ class ViewHelperFileSecondLevelTest extends TestCase
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         // first line is include, then empty, then upper headline decoration, then text -> fourth line
-        $index = 3;
+        $index = 5;
         $this->assertSame('link.editRecord' . PHP_EOL, $output[$index]);
     }
 
@@ -90,7 +90,7 @@ class ViewHelperFileSecondLevelTest extends TestCase
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
         // first line is include, then empty, then upper headline decoration, then text, then lower headline decoration
-        $headlineTextIndex = 3;
+        $headlineTextIndex = 5;
         $lengthOfHeadline = strlen($output[$headlineTextIndex]);
         $this->assertSame($lengthOfHeadline, strlen($output[$headlineTextIndex - 1]));
         $this->assertRegExp('/^[=]+$/', $output[$headlineTextIndex - 1]);
@@ -104,8 +104,18 @@ class ViewHelperFileSecondLevelTest extends TestCase
     public function descriptionGetsRendered()
     {
         $output = file($this->vfs->getChild($this->generatedFilePath)->url());
-        $index = 7;
+        $index = 9;
         $this->assertSame('Use this ViewHelper to provide edit links to records. The ViewHelper will' . PHP_EOL, $output[$index]);
+    }
+
+    /**
+     * @test
+     */
+    public function headerIdentifierGetsRendered()
+    {
+        $output = file($this->vfs->getChild($this->generatedFilePath)->url());
+        $index = 2;
+        $this->assertSame('.. _typo3-backend-link-editrecord:' . PHP_EOL, $output[$index]);
     }
 
     /**

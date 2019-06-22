@@ -1,5 +1,7 @@
 .. include:: ../../../Includes.txt
 
+.. _typo3-backend-modulelink:
+
 ==========
 moduleLink
 ==========
@@ -11,28 +13,53 @@ Arguments
 =========
 
 
-route (string)
---------------
+.. _modulelink_route:
+route
+-----
 
+:aspect:`DataType`
+   string
 
-The route to link to
+:aspect:`Required`
+   false
+:aspect:`Description`
+   The route to link to
 
-arguments (anySimpleType)
--------------------------
+.. _modulelink_arguments:
+arguments
+---------
 
+:aspect:`DataType`
+   mixed
 
-Default: array ()
+:aspect:`Default`
+   array ()
 
-Additional link arguments
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Additional link arguments
 
-query (string)
---------------
+.. _modulelink_query:
+query
+-----
 
+:aspect:`DataType`
+   string
 
-Additional link arguments as string
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Additional link arguments as string
 
-currentUrlParameterName (string)
---------------------------------
+.. _modulelink_currenturlparametername:
+currentUrlParameterName
+-----------------------
 
+:aspect:`DataType`
+   string
 
-Add current url as given parameter
+:aspect:`Required`
+   false
+:aspect:`Description`
+   Add current url as given parameter

@@ -146,27 +146,35 @@ class RstExporter implements ExporterInterface
 
         $headline = $viewHelperDocumentation->getName();
         $headlineDecoration = array_pad([], strlen($headline), '=');
+        $namespace = array_filter(explode('/', $viewHelperDocumentation->getSchema()->getPath()));
+        array_pop($namespace);
+        $namespace = implode('/', $namespace);
+        $headlineIdentifier = str_replace(['.', '\'', '/'], '-', strtolower($namespace . '-' . $headline));
 
         $arguments = [];
         foreach ($viewHelperDocumentation->getArgumentDefinitions() as $argumentDefinition) {
-            $argumentHeadline = trim($argumentDefinition->getName() . ' (' . $argumentDefinition->getType() . ') ' . ($argumentDefinition->isRequired() ? 'required' : ''));
+            $argumentHeadline = trim($argumentDefinition->getName());
             $argumentHeadlineDecoration = array_pad([], strlen($argumentHeadline), '-');
+            $argumentHeadlineIdentifier = strtolower($headline . '_' . $argumentHeadline);
             $argumentsData = [
                 'headline' => $argumentHeadline,
+                'headlineIdentifier' => $argumentHeadlineIdentifier,
                 'headlineDecoration' => implode('', $argumentHeadlineDecoration),
-                'description' => trim($argumentDefinition->getDescription()),
+                'description' => ucfirst(trim($argumentDefinition->getDescription())),
+                'dataType' => ($argumentDefinition->getType() === 'anySimpleType') ? 'mixed' : trim($argumentDefinition->getType()),
+                'isRequired' => $argumentDefinition->isRequired(),
             ];
 
             $defaultValue = $argumentDefinition->getDefaultValue();
             if ($defaultValue !== 'NULL' && $defaultValue !== "''") {
-                $sanitizedDefault = str_replace(PHP_EOL, '', $defaultValue);
-                $argumentsData['default'] = 'Default: ' . trim($sanitizedDefault) . PHP_EOL;
+                $argumentsData['default'] = trim(str_replace(PHP_EOL, '', $defaultValue));
             }
             $arguments[] = $argumentsData;
         }
         $this->view->assignMultiple([
             'headline' => $headline,
             'headlineDecoration' => implode('', $headlineDecoration),
+            'headlineIdentifier' => $headlineIdentifier,
             'rootPath' => $rootPath,
             'viewHelper' => $viewHelperDocumentation,
             'arguments' => $arguments,
