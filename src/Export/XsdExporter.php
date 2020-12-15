@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace NamelessCoder\FluidDocumentationGenerator\Export;
 
 use NamelessCoder\FluidDocumentationGenerator\Data\DataFileResolver;
-use NamelessCoder\FluidDocumentationGenerator\ProcessedSchema;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaPackage;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaVendor;
+use NamelessCoder\FluidDocumentationGenerator\ProcessedSchema;
 use NamelessCoder\FluidDocumentationGenerator\SchemaDocumentationGenerator;
 use NamelessCoder\FluidDocumentationGenerator\ViewHelperDocumentation;
 use NamelessCoder\FluidDocumentationGenerator\ViewHelperDocumentationGroup;
@@ -47,7 +47,7 @@ class XsdExporter implements ExporterInterface
         ];
     }
 
-    public function exportRoot(): void
+    public function exportRoot(bool $forceUpdate): void
     {
         // This method has no function in this exporter
     }

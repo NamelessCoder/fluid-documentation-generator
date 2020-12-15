@@ -9,8 +9,8 @@ use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaPackage;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaVendor;
 use NamelessCoder\FluidDocumentationGenerator\Entity\SchemaVersion;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
-use TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition;
 
 class SchemaProcessingTest extends TestCase
 {
@@ -33,12 +33,9 @@ class SchemaProcessingTest extends TestCase
     }
 
     /**
-     * @param string $viewHelperName
-     * @param string $expectedDocumentation
-     * @param array $expectedArguments
-     * @dataProvider getDocumentedViewHelperExpectations
+     * @test
      */
-    public function testViewHelperIsDocumentedCorrectly(string $viewHelperName, string $expectedDocumentation, array $expectedArguments): void
+    public function viewHelperDocumentationContainsEntriesAsExpected(): void
     {
         $vendor = new SchemaVendor('test');
         $package = new SchemaPackage($vendor, 'test');
@@ -46,15 +43,8 @@ class SchemaProcessingTest extends TestCase
         $schema = new Schema($version);
         $processedSchema = $schema->process();
         $documentedViewHelpers = $processedSchema->getDocumentedViewHelpers();
-        $this->assertArrayHasKey($viewHelperName, $documentedViewHelpers);
-    }
-
-    public function getDocumentedViewHelperExpectations(): array
-    {
-        return [
-            [
-                'format.json.encode', 'foobar', [new ArgumentDefinition('test', 'string', 'foobar', true)]
-            ]
-        ];
+        $this->assertArrayHasKey('root', $documentedViewHelpers);
+        $this->assertArrayHasKey('format.json.encode', $documentedViewHelpers);
+        $this->assertArrayHasKey('format.json.decode', $documentedViewHelpers);
     }
 }
